@@ -1,10 +1,12 @@
 from flask import Flask, jsonify
-from src.predictor import generate_predictions
-from src.ml_predictor import generate_ml_predictions
-from src.analyzer import analyze_draws
 import sys
 import os
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
+
+from src.predictor import generate_predictions
+from src.ml_predictor import generate_ml_predictions
+from src.analyzer import analyze_draws
+
 
 
 app = Flask(__name__)
