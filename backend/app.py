@@ -3,13 +3,15 @@ import sys
 import os
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
+from src.fetcher import fetch_draws
+from src.analyzer import analyze_draws
 from src.predictor import generate_predictions
 from src.ml_predictor import generate_ml_predictions
-from src.analyzer import analyze_draws
-
-
 
 app = Flask(__name__)
+
+# Fetch data when the app starts (once)
+fetch_draws()
 
 @app.route("/predict", methods=["GET"])
 def predict():
