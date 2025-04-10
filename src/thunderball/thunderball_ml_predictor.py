@@ -1,109 +1,81 @@
-
+import os
 import pandas as pd
 import numpy as np
-from xgboost import XGBClassifier
+from sklearn.multioutput import MultiOutputClassifier
+from sklearn.ensemble import RandomForestClassifier
 from sklearn.model_selection import train_test_split
-from collections import Counter
-import random
 
-# Load draw data
-df = pd.read_csv("data/thunderball_draws.csv")
+# === Auto-download CSV if missing ===
+csv_path = "data/thunderball_draws.csv"
+csv_url = "https://www.national-lottery.co.uk/results/thunderball/draw-history/csv"
 
-# Clean and normalize column names
-df.columns = [col.strip().lower().replace(" ", "_") for col in df.columns]
+if not os.path.exists(csv_path):
+    os.makedirs("data", exist_ok=True)
+    print("📥 Downloading Thunderball data...")
+    df_download = pd.read_csv(csv_url)
+    df_download.to_csv(csv_path, index=False)
+    print("✅ Thunderball data saved.")
 
-# Identify main and thunderball columns
-main_cols = ["ball_1", "ball_2", "ball_3", "ball_4", "ball_5"]
-thunder_col = "thunderball"
+# === Load Data ===
+df = pd.read_csv(csv_path)
 
-# Prepare features: each row is the previous draw's numbers (frequency)
+main_cols = ['Ball 1', 'Ball 2', 'Ball 3', 'Ball 4', 'Ball 5']
+thunder_col = 'Thunderball'
+
+
 def number_frequency_features(df, main_cols, thunder_col):
-    feature_rows = []
-    label_main = [[] for _ in range(5)]
-    label_thunder = []
+    number_range = range(1, 40)  # 1–39 for main numbers
+    thunder_range = range(1, 15)  # 1–14 for Thunderball
 
-    for i in range(5, len(df)):
-        prev = df.iloc[i-5:i]
-        next_draw = df.iloc[i]
+    X = []
+    y_main = [[] for _ in range(5)]
+    y_thunder = []
 
-        main_flat = prev[main_cols].values.flatten()
-        thunder_values = prev[thunder_col].values
+    for i in range(len(df) - 1):
+        current_draw = df.iloc[i]
+        next_draw = df.iloc[i + 1]
 
-        main_counts = Counter(main_flat)
-        thunder_counts = Counter(thunder_values)
+        features = [0] * (len(number_range) + len(thunder_range))
+        for col in main_cols:
+            if pd.notna(current_draw[col]):
+                idx = int(current_draw[col]) - 1
+                features[idx] += 1
 
-        row = []
-        for n in range(1, 40):  # 1-39
-            row.append(main_counts.get(n, 0))
-        for t in range(1, 15):  # 1-14
-            row.append(thunder_counts.get(t, 0))
+        if pd.notna(current_draw[thunder_col]):
+            idx = int(current_draw[thunder_col]) - 1 + len(number_range)
+            features[idx] += 1
 
-        feature_rows.append(row)
+        X.append(features)
 
         for j, col in enumerate(main_cols):
-            label_main[j].append(next_draw[col])
-        label_thunder.append(next_draw[thunder_col])
+            y_main[j].append(int(next_draw[col]))
 
-    X = np.array(feature_rows)
-    y_main = [np.array(lab) - 1 for lab in label_main]
-    y_thunder = np.array(label_thunder) - 1
+        y_thunder.append(int(next_draw[thunder_col]))
 
-    return X, y_main, y_thunder
-
-# Build training set
-X, y_main, y_thunder = number_frequency_features(df, main_cols, thunder_col)
-
-# Train one model per main number position
-main_models = []
-for y in y_main:
-    model = XGBClassifier(use_label_encoder=False, eval_metric="mlogloss", num_class=39)
-    # Hack to ensure all classes are present for 0–38
-    y_padded = np.concatenate([y, np.arange(39)])
-    X_padded = np.concatenate([X, np.tile(X[0], (39, 1))])  # Repeat a dummy row
-
-    model.fit(X_padded, y_padded)
-
-    main_models.append(model)
-
-# Train Thunderball model
-thunder_model = XGBClassifier(use_label_encoder=False, eval_metric="mlogloss", num_class=14)
-y_thunder_padded = np.concatenate([y_thunder, np.arange(14)])
-X_thunder_padded = np.concatenate([X, np.tile(X[0], (14, 1))])
-
-thunder_model.fit(X_thunder_padded, y_thunder_padded)
+    return pd.DataFrame(X), pd.DataFrame(y_main).T, pd.Series(y_thunder)
 
 
-# Make a prediction using the latest 5 draws
 def predict_thunderball_with_ml(df, main_cols, thunder_col):
-    recent = df.iloc[-5:]
-    main_flat = recent[main_cols].values.flatten()
-    thunder_values = recent[thunder_col].values
+    X, y_main, y_thunder = number_frequency_features(df, main_cols, thunder_col)
 
-    main_counts = Counter(main_flat)
-    thunder_counts = Counter(thunder_values)
+    model = MultiOutputClassifier(RandomForestClassifier(n_estimators=100, random_state=42))
+    model.fit(X, y_main)
+    last_features = X.iloc[[-1]]
+    main_preds = model.predict(last_features)[0].tolist()
 
-    row = []
-    for n in range(1, 40):
-        row.append(main_counts.get(n, 0))
-    for t in range(1, 15):
-        row.append(thunder_counts.get(t, 0))
+    thunder_model = RandomForestClassifier(n_estimators=100, random_state=42)
+    thunder_model.fit(X, y_thunder)
+    thunder_pred = thunder_model.predict(last_features)[0]
 
-    input_vector = np.array(row).reshape(1, -1)
-
-    predicted_main = []
-    for model in main_models:
-        pred = int(model.predict(input_vector)[0]) + 1
-        while pred in predicted_main:
-            pred = random.randint(1, 39)
-        predicted_main.append(pred)
-
-    predicted_thunder = int(thunder_model.predict(input_vector)[0]) + 1
     return {
-        "main": sorted(predicted_main),
-        "thunderball": predicted_thunder
+        "main_numbers": sorted(main_preds),
+        "thunderball": thunder_pred
     }
 
-# Predict and show result
+
+# === For testing directly ===
 if __name__ == "__main__":
-    prediction = predict_thunderball_with_ml(df, main_cols, thunder_col)
-    print(prediction)
+    result = predict_thunderball_with_ml(df, main_cols, thunder_col)
+    print("🔮 Thunderball ML Prediction:")
+    print("Main Numbers:", result["main_numbers"])
+    print("Thunderball:", result["thunderball"])
