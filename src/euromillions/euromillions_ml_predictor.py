@@ -1,4 +1,4 @@
-# src/ml_predictor.py
+# src/euromillions_ml_predictor.py
 
 import pandas as pd
 import numpy as np
@@ -72,7 +72,7 @@ def predict_draw(models, X_sample, label_maps, k=1):
         preds.append(real_values)
     return preds
 
-def generate_ml_predictions():
+def predict_euromillions_with_ml():
     X, y_main, y_star, label_maps_main, label_maps_star = build_training_data()
 
     scaler = StandardScaler()

@@ -1,20 +1,20 @@
 # main.py
 
-from src.fetcher import fetch_draws
-from src.analyzer import analyze_draws
-from src.predictor import generate_predictions
-from src.analyzer import analyze_co_occurrences
-from src.ml_predictor import generate_ml_predictions
+from src.euromillions.euromillions_fetcher import fetch_draws
+from src.euromillions.euromillions_analyzer import analyze_euromillions_draws
+from src.euromillions.euromillions_predictor import generate_euromillions_predictions
+from src.euromillions.euromillions_analyzer import analyze_co_occurrences
+from src.euromillions.euromillions_ml_predictor import predict_euromillions_with_ml
 
 def main():
     print("Fetching EuroMillions draw data...")
     fetch_draws()
 
     print("Analyzing draw data...")
-    stats = analyze_draws()
+    stats = analyze_euromillions_draws()
 
     print("Generating predictions...")
-    predictions = generate_predictions(stats)
+    predictions = generate_euromillions_predictions(stats)
 
     print("\nTop 10 predicted number sets:")
     for i, p in enumerate(predictions, 1):
@@ -32,7 +32,7 @@ def main():
         print(f"{pair}: {count} times")
 
     print("\n🎯 ML-Based Prediction:")
-    ml_prediction = generate_ml_predictions()
+    ml_prediction = predict_euromillions_with_ml()
     print(f"Main Numbers: {ml_prediction['main_numbers']}")
     print(f"Lucky Stars: {ml_prediction['lucky_stars']}")
 

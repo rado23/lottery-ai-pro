@@ -1,4 +1,4 @@
-# src/fetcher.py
+# src/euromillions_fetcher.py
 
 import requests
 import pandas as pd

@@ -1,4 +1,4 @@
-# src/predictor.py
+# src/euromillions_predictor.py
 
 import random
 
@@ -7,7 +7,7 @@ def weighted_random_sample(weights_dict, k):
     weights = list(weights_dict.values())
     return random.choices(numbers, weights=weights, k=k)
 
-def generate_predictions(stats, sets=10):
+def generate_euromillions_predictions(stats, sets=10):
     predictions = []
 
     for _ in range(sets):

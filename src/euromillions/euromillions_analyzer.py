@@ -1,4 +1,4 @@
-# src/analyzer.py
+# src/euromillions_analyzer.py
 
 import pandas as pd
 from collections import Counter
@@ -6,7 +6,7 @@ from datetime import datetime
 from itertools import combinations
 from collections import defaultdict
 
-def analyze_draws():
+def analyze_euromillions_draws():
     df = pd.read_csv("data/euromillions_draws.csv")
     df["date"] = pd.to_datetime(df["date"])
 

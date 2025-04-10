@@ -1,29 +1,43 @@
 from flask import Flask, jsonify
-import sys
-import os
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
-
-from src.fetcher import fetch_draws
-from src.analyzer import analyze_draws
-from src.predictor import generate_predictions
-from src.ml_predictor import generate_ml_predictions
+from src.euromillions.euromillions_ml_predictor import predict_euromillions_with_ml
+from src.thunderball.thunderball_predictor import generate_thunderball_predictions
+from src.thunderball.thunderball_ml_predictor import predict_thunderball_with_ml
+from src.euromillions.euromillions_analyzer import analyze_euromillions_draws
+from src.euromillions.euromillions_predictor import generate_euromillions_predictions
 
 app = Flask(__name__)
 
-# Fetch data when the app starts (once)
-fetch_draws()
+# --- EuroMillions Endpoints ---
 
-@app.route("/predict", methods=["GET"])
-def predict():
-    stats = analyze_draws()
-    predictions = generate_predictions(stats)
-    ml = generate_ml_predictions()
 
-    return jsonify({
-        "heuristic": predictions,
-        "ml": ml
-    })
+
+@app.route("/predict/euromillions", methods=["GET"])
+def predict_euromillions():
+    stats = analyze_euromillions_draws()
+    heuristic = generate_euromillions_predictions(stats)
+    return jsonify({"heuristic": heuristic})
+
+
+@app.route("/predict/euromillions-ml", methods=["GET"])
+def predict_euromillions_ml():
+    ml = predict_euromillions_with_ml()
+    return jsonify({"ml": ml})
+
+# --- Thunderball Endpoints ---
+
+@app.route("/predict/thunderball", methods=["GET"])
+def predict_thunderball():
+    heuristic = generate_thunderball_predictions()
+    return jsonify({"heuristic": heuristic})
+
+from src.thunderball.thunderball_analyzer import analyze_thunderball_draws
+
+@app.route("/predict/thunderball-ml", methods=["GET"])
+def predict_thunderball_ml():
+    df, main_cols, thunder_col = analyze_thunderball_draws()
+    ml = predict_thunderball_with_ml(df, main_cols, thunder_col)
+    return jsonify({"ml": ml})
+
 
 if __name__ == "__main__":
-    port = int(os.environ.get("PORT", 5000))
-    app.run(debug=False, host="0.0.0.0", port=port)
+    app.run(debug=True)

@@ -4,11 +4,32 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="bcacea02-2198-49c5-886f-a6758278f12e" name="Changes" comment="Added .gitignore" />
+    <list default="true" id="bcacea02-2198-49c5-886f-a6758278f12e" name="Changes" comment="Fix: Fetch data on startup for Render deployment">
+      <change afterPath="$PROJECT_DIR$/src/thunderball/download_thunderball_csv.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/thunderball/thunderball_analyzer.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/thunderball/thunderball_ml_predictor.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/thunderball/thunderball_predictor.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/csv-editor.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/csv-editor.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/app.py" beforeDir="false" afterPath="$PROJECT_DIR$/backend/app.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/requirements.txt" beforeDir="false" afterPath="$PROJECT_DIR$/requirements.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/analyzer.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/euromillions/euromillions_analyzer.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/fetcher.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/euromillions/euromillions_fetcher.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/ml_predictor.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/euromillions/euromillions_ml_predictor.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/predictor.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/euromillions/euromillions_predictor.py" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Python Script" />
+      </list>
+    </option>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -45,6 +66,12 @@
     "git-widget-placeholder": "master"
   }
 }]]></component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/src/thunderball" />
+      <recent name="$PROJECT_DIR$/src/euromillions" />
+    </key>
+  </component>
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
@@ -101,7 +128,15 @@
       <option name="project" value="LOCAL" />
       <updated>1744113775191</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="Fix: Fetch data on startup for Render deployment">
+      <option name="closed" value="true" />
+      <created>1744114178299</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1744114178299</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -121,6 +156,7 @@
     <MESSAGE value="Introduced absolute path" />
     <MESSAGE value="Corrected order of imports" />
     <MESSAGE value="Added .gitignore" />
-    <option name="LAST_COMMIT_MESSAGE" value="Added .gitignore" />
+    <MESSAGE value="Fix: Fetch data on startup for Render deployment" />
+    <option name="LAST_COMMIT_MESSAGE" value="Fix: Fetch data on startup for Render deployment" />
   </component>
 </project>
