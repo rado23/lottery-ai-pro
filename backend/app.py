@@ -56,6 +56,25 @@ def predict_thunderball_ml():
     ml = predict_thunderball_with_ml(df, main_cols, thunder_col)
     return jsonify({"ml": ml})
 
+# --- Lotto Endpoints ---
+@app.route("/predict/lotto", methods=["GET"])
+def predict_lotto():
+    from src.lotto.lotto_analyzer import analyze_lotto_draws
+    from src.lotto.lotto_predictor import generate_lotto_predictions
+
+    stats = analyze_lotto_draws()
+    heuristic = generate_lotto_predictions(stats)
+    return jsonify({"heuristic": heuristic})
+
+
+@app.route("/predict/lotto-ml", methods=["GET"])
+def predict_lotto_ml():
+    from src.lotto.lotto_analyzer import analyze_lotto_draws
+    from src.lotto.lotto_ml_predictor import predict_lotto_with_ml
+
+    df, main_cols = analyze_lotto_draws(return_raw=True)
+    ml = predict_lotto_with_ml(df, main_cols)
+    return jsonify({"ml": ml})
 
 # --- Start the server (Render sets the PORT env variable) ---
 
