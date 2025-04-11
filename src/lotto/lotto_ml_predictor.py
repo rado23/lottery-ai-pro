@@ -19,22 +19,30 @@ def number_frequency_features(df, main_cols):
 
     return X, y_df
 
+
 def predict_lotto_with_ml(df, main_cols):
-    stats = analyze_lotto_draws()
-    df = pd.read_csv("data/lotto_draws.csv")
+
+    # Clean + prepare
     df.columns = df.columns.str.strip().str.lower().str.replace(" ", "_")
     main_cols = [col for col in df.columns if "ball" in col]
 
     X, y = number_frequency_features(df, main_cols)
 
-    # Use MultiOutputClassifier to predict 6 numbers
+    # Train model
     model = MultiOutputClassifier(RandomForestClassifier(n_estimators=100, random_state=42))
     model.fit(X, y)
 
-    # Predict next draw using last known feature row
+    # Predict probabilities
     last_features = X.iloc[[-1]]
-    predicted = model.predict(last_features)[0]
+    probas = model.predict_proba(last_features)
+
+    # Compute average probability for each number
+    mean_probs = [p[0][1] if isinstance(p[0], (list, tuple)) else p[1] for p in probas]
+
+    # Pick top 6 most probable numbers
+    top_indices = sorted(range(len(mean_probs)), key=lambda i: mean_probs[i], reverse=True)[:6]
+    top_numbers = [i + 1 for i in top_indices]  # +1 for 1-based Lotto numbers
 
     return {
-        "main_numbers": sorted([int(n) for n in predicted])
+        "main_numbers": sorted(top_numbers)
     }
