@@ -4,8 +4,14 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="bcacea02-2198-49c5-886f-a6758278f12e" name="Changes" comment="Fix: Limit ML Lotto to 6 numbers - simplification">
+    <list default="true" id="bcacea02-2198-49c5-886f-a6758278f12e" name="Changes" comment="Fix: Improve ML model">
+      <change afterPath="$PROJECT_DIR$/src/setforlife/download_setforlife_csv.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/setforlife/setforlife_analyzer.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/setforlife/setforlife_ml_predictor.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/setforlife/setforlife_predictor.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/app.py" beforeDir="false" afterPath="$PROJECT_DIR$/backend/app.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/requirements.txt" beforeDir="false" afterPath="$PROJECT_DIR$/requirements.txt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -340,7 +346,15 @@
       <option name="project" value="LOCAL" />
       <updated>1744412452369</updated>
     </task>
-    <option name="localTasksCounter" value="34" />
+    <task id="LOCAL-00034" summary="Fix: Improve ML model">
+      <option name="closed" value="true" />
+      <created>1744413843526</created>
+      <option name="number" value="00034" />
+      <option name="presentableId" value="LOCAL-00034" />
+      <option name="project" value="LOCAL" />
+      <updated>1744413843526</updated>
+    </task>
+    <option name="localTasksCounter" value="35" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -355,7 +369,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Fix:modify your Flask app.py file to use the PORT from the environment" />
     <MESSAGE value="Fix:Euromillions CSV issues" />
     <MESSAGE value="Feat:a /health route for uptime monitoring or auto-refresh options on data." />
     <MESSAGE value="Fix: Fix the euromillions" />
@@ -380,6 +393,7 @@
     <MESSAGE value="Fix: Correct Lotto savings to CSV" />
     <MESSAGE value="Fix: Limit ML Lotto to 6 numbers" />
     <MESSAGE value="Fix: Limit ML Lotto to 6 numbers - simplification" />
-    <option name="LAST_COMMIT_MESSAGE" value="Fix: Limit ML Lotto to 6 numbers - simplification" />
+    <MESSAGE value="Fix: Improve ML model" />
+    <option name="LAST_COMMIT_MESSAGE" value="Fix: Improve ML model" />
   </component>
 </project>

@@ -22,10 +22,17 @@ from src.lotto.lotto_predictor import generate_lotto_predictions
 from src.lotto.lotto_analyzer import analyze_lotto_draws
 from src.lotto.lotto_ml_predictor import predict_lotto_with_ml
 
+# --- Set For Life ---
+from src.setforlife.download_setforlife_csv import save_setforlife_draws_csv
+from src.setforlife.setforlife_predictor import generate_setforlife_predictions
+from src.setforlife.setforlife_analyzer import analyze_setforlife_draws
+from src.setforlife.setforlife_ml_predictor import predict_setforlife_with_ml
+
 # 🧠 Load data on start
 save_thunderball_draws_csv()
 fetch_draws()
 save_lotto_draws_csv()
+save_setforlife_draws_csv()
 
 # Initialize app
 app = Flask(__name__)
@@ -76,6 +83,21 @@ def predict_lotto_ml():
     df, main_cols = analyze_lotto_draws(return_raw=True)
     ml = predict_lotto_with_ml(df, main_cols)
     return jsonify({"ml": ml})
+
+# --- Set for Life Endpoints ---
+@app.route("/predict/setforlife", methods=["GET"])
+def predict_setforlife():
+    stats = analyze_setforlife_draws()
+    heuristic = generate_setforlife_predictions(stats)
+    return jsonify({"heuristic": heuristic})
+
+
+@app.route("/predict/setforlife-ml", methods=["GET"])
+def predict_setforlife_ml():
+    df, main_cols, life_col = analyze_setforlife_draws(return_raw=True)
+    ml = predict_setforlife_with_ml(df, main_cols, life_col)
+    return jsonify({"ml": ml})
+
 
 # --- Start the server (Render sets the PORT env variable) ---
 
