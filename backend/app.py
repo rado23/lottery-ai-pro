@@ -40,10 +40,16 @@ def predict_euromillions():
     return jsonify({"heuristic": heuristic})
 
 
-@app.route("/predict/euromillions-ml", methods=["GET"])
-def predict_euromillions_ml():
-    ml = predict_euromillions_with_ml()
+@app.route("/predict/thunderball-ml", methods=["GET"])
+def predict_thunderball_ml():
+    from src.thunderball.thunderball_analyzer import analyze_thunderball_draws
+    from src.thunderball.thunderball_ml_predictor import predict_thunderball_with_ml
+
+    df, main_cols, thunder_col = analyze_thunderball_draws()
+    ml = predict_thunderball_with_ml(df, main_cols, thunder_col)
+
     return jsonify({"ml": ml})
+
 
 
 # --- Thunderball Endpoints ---
