@@ -1,40 +1,38 @@
-# src/euromillions_fetcher.py
-
 import requests
 import pandas as pd
 import os
 
-def fetch_draws():
-    url = "https://euromillions.api.pedromealha.dev/v1/draws"
-    headers = {"accept": "application/json"}
-    response = requests.get(url, headers=headers)
+def fetch_euromillions_data():
+    url = "https://api.national-lottery.co.uk/api/DrawHistory/EURO"
+    response = requests.get(url)
 
-    if response.status_code == 200:
-        json_data = response.json()
-        draws = json_data if isinstance(json_data, list) else json_data.get("items", [])
-        records = []
+    if response.status_code != 200:
+        raise Exception(f"Failed to fetch data. Status code: {response.status_code}")
 
-        for draw in draws:
-            try:
-                main = [int(n) for n in draw.get("numbers", [])]
-                stars = [int(s) for s in draw.get("stars", [])]
-                date = draw.get("date")
+    data = response.json()
 
-                if len(main) != 5 or len(stars) != 2 or not date:
-                    continue  # skip malformed entries
+    all_draws = []
+    for draw in data.get("drawHistory", []):
+        row = {
+            "date": draw.get("drawDate"),
+            "main1": draw.get("balls", [None]*5)[0],
+            "main2": draw.get("balls", [None]*5)[1],
+            "main3": draw.get("balls", [None]*5)[2],
+            "main4": draw.get("balls", [None]*5)[3],
+            "main5": draw.get("balls", [None]*5)[4],
+            "star1": draw.get("luckyStars", [None]*2)[0],
+            "star2": draw.get("luckyStars", [None]*2)[1],
+        }
+        all_draws.append(row)
 
-                records.append({
-                    "date": date,
-                    **{f"main_{i+1}": n for i, n in enumerate(main)},
-                    **{f"star_{i+1}": s for i, s in enumerate(stars)}
-                })
-            except Exception as e:
-                print(f"Skipping invalid draw: {e}")
-                continue
+    df = pd.DataFrame(all_draws)
+    return df
 
-        os.makedirs("data", exist_ok=True)
-        df = pd.DataFrame(records)
-        df.to_csv("data/euromillions_draws.csv", index=False)
-        print(f"Saved {len(df)} draws to data/euromillions_draws.csv")
-    else:
-        print(f"API Error: {response.status_code}")
+
+def save_euromillions_draws_csv(path="data/euromillions_draws.csv"):
+    print("📥 Fetching EuroMillions data from API...")
+    df = fetch_euromillions_data()
+
+    os.makedirs(os.path.dirname(path), exist_ok=True)
+    df.to_csv(path, index=False)
+    print(f"✅ EuroMillions data saved to {path}")
