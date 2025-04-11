@@ -1,38 +1,35 @@
 import requests
 import pandas as pd
-import os
+from datetime import datetime
+from io import StringIO
+
+EUROMILLIONS_CSV_URL = "https://www.national-lottery.co.uk/results/euromillions/draw-history/csv"
+SAVE_PATH = "data/euromillions_draws.csv"
 
 def fetch_euromillions_data():
-    url = "https://api.national-lottery.co.uk/api/DrawHistory/EURO"
-    response = requests.get(url)
+    print("📥 Fetching EuroMillions data from official website...")
 
+    headers = {
+        "User-Agent": (
+            "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) "
+            "AppleWebKit/537.36 (KHTML, like Gecko) "
+            "Chrome/91.0.4472.114 Safari/537.36"
+        )
+    }
+
+    response = requests.get(EUROMILLIONS_CSV_URL, headers=headers)
     if response.status_code != 200:
         raise Exception(f"Failed to fetch data. Status code: {response.status_code}")
 
-    data = response.json()
+    csv_data = response.content.decode("utf-8")
+    df = pd.read_csv(StringIO(csv_data))
 
-    all_draws = []
-    for draw in data.get("drawHistory", []):
-        row = {
-            "date": draw.get("drawDate"),
-            "main1": draw.get("balls", [None]*5)[0],
-            "main2": draw.get("balls", [None]*5)[1],
-            "main3": draw.get("balls", [None]*5)[2],
-            "main4": draw.get("balls", [None]*5)[3],
-            "main5": draw.get("balls", [None]*5)[4],
-            "star1": draw.get("luckyStars", [None]*2)[0],
-            "star2": draw.get("luckyStars", [None]*2)[1],
-        }
-        all_draws.append(row)
+    # Normalize column names
+    df.columns = df.columns.str.strip().str.lower().str.replace(" ", "_")
 
-    df = pd.DataFrame(all_draws)
     return df
 
-
-def save_euromillions_draws_csv(path="data/euromillions_draws.csv"):
-    print("📥 Fetching EuroMillions data from API...")
+def save_euromillions_draws_csv():
     df = fetch_euromillions_data()
-
-    os.makedirs(os.path.dirname(path), exist_ok=True)
-    df.to_csv(path, index=False)
-    print(f"✅ EuroMillions data saved to {path}")
+    df.to_csv(SAVE_PATH, index=False)
+    print(f"✅ EuroMillions results saved to {SAVE_PATH}")
