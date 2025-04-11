@@ -15,6 +15,16 @@ from src.euromillions.euromillions_ml_predictor import predict_euromillions_with
 
 import os
 
+def generate_euromillions_predictions(stats):
+    main_candidates = list(stats["main_number_weights"].keys())[:5]
+    star_candidates = list(stats["star_number_weights"].keys())[:2]
+    return [main_candidates + star_candidates]  # simple one-prediction list
+
+def generate_thunderball_predictions(stats):
+    main_candidates = list(stats["main_number_weights"].keys())[:5]
+    thunder_candidates = list(stats["thunderball_weights"].keys())[:1]
+    return [main_candidates + thunder_candidates]  # simple one-prediction list
+
 app = Flask(__name__)
 CORS(app)
 
