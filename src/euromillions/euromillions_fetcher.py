@@ -1,34 +1,40 @@
-import pandas as pd
+# src/euromillions/euromillions_fetcher.py
+
 import requests
-from bs4 import BeautifulSoup
-from io import StringIO
+import pandas as pd
+import os
 
-def fetch_euromillions_data():
-    print("📥 Fetching EuroMillions data from official website...")
-    url = "https://www.national-lottery.com/euromillions/results/history"
+def fetch_draws():
+    url = "https://euromillions.api.pedromealha.dev/v1/draws"
+    headers = {"accept": "application/json"}
+    response = requests.get(url, headers=headers)
 
-    response = requests.get(url)
-    if response.status_code != 200:
-        raise Exception(f"Failed to fetch data. Status code: {response.status_code}")
+    if response.status_code == 200:
+        json_data = response.json()
+        draws = json_data if isinstance(json_data, list) else json_data.get("items", [])
+        records = []
 
-    soup = BeautifulSoup(response.text, "html.parser")
-    table = soup.find("table")
+        for draw in draws:
+            try:
+                main = [int(n) for n in draw.get("numbers", [])]
+                stars = [int(s) for s in draw.get("stars", [])]
+                date = draw.get("date")
 
-    # Extract and parse the table into a DataFrame (wrap with StringIO to avoid FutureWarning)
-    df = pd.read_html(StringIO(str(table)))[0]
+                if len(main) != 5 or len(stars) != 2 or not date:
+                    continue  # skip malformed entries
 
-    # Rename columns to match analyzer expectations
-    df.columns = [
-        "draw_date", "ball_1", "ball_2", "ball_3", "ball_4", "ball_5",
-        "lucky_star_1", "lucky_star_2", "jackpot", "draw_machine"
-    ]
+                records.append({
+                    "date": date,
+                    **{f"main_{i+1}": n for i, n in enumerate(main)},
+                    **{f"star_{i+1}": s for i, s in enumerate(stars)}
+                })
+            except Exception as e:
+                print(f"Skipping invalid draw: {e}")
+                continue
 
-    print("✅ EuroMillions columns:", df.columns.tolist())
-    return df
-
-
-def save_euromillions_draws_csv():
-    print("📥 Downloading EuroMillions data...")
-    df = fetch_euromillions_data()
-    df.to_csv("data/euromillions_draws.csv", index=False)
-    print("✅ EuroMillions results saved to data/euromillions_draws.csv")
+        os.makedirs("data", exist_ok=True)
+        df = pd.DataFrame(records)
+        df.to_csv("data/euromillions_draws.csv", index=False)
+        print(f"✅ Saved {len(df)} draws to data/euromillions_draws.csv")
+    else:
+        print(f"❌ API Error: {response.status_code}")
