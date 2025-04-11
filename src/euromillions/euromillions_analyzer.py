@@ -1,57 +1,44 @@
-# src/euromillions_analyzer.py
-
 import pandas as pd
-from collections import Counter
 from datetime import datetime
+from collections import Counter
 from itertools import combinations
-from collections import defaultdict
+
 
 def analyze_euromillions_draws():
     df = pd.read_csv("data/euromillions_draws.csv")
-    df["date"] = pd.to_datetime(df["date"])
+
+    # 🔄 Match column name to normalized format
+    df["draw_date"] = pd.to_datetime(df["draw_date"])
 
     main_counts = Counter()
     star_counts = Counter()
 
     today = pd.Timestamp(datetime.today())
-    for _, row in df.iterrows():
-        days_ago = (today - row["date"]).days
-        weight = max(1, 100 - days_ago // 7)  # recency weight: stronger for recent weeks
-
-        for i in range(1, 6):
-            main_counts[row[f"main_{i}"]] += weight
-        for i in range(1, 3):
-            star_counts[row[f"star_{i}"]] += weight
-
-    return {
-        "main_number_weights": dict(main_counts),
-        "star_number_weights": dict(star_counts)
-    }
-
-def analyze_co_occurrences(filepath="data/euromillions_draws.csv"):
-    df = pd.read_csv(filepath)
-
-    main_pair_counts = defaultdict(int)
-    star_pair_counts = defaultdict(int)
 
     for _, row in df.iterrows():
-        main_nums = [row[f"main_{i+1}"] for i in range(5)]
-        star_nums = [row[f"star_{i+1}"] for i in range(2)]
+        date = row["draw_date"]
+        weeks_ago = (today - date).days // 7
 
-        # Count all main number pairs (unordered)
-        for pair in combinations(sorted(main_nums), 2):
-            main_pair_counts[pair] += 1
+        main_numbers = [row[f"ball_{i}"] for i in range(1, 6)]
+        star_numbers = [row[f"lucky_star_{i}"] for i in range(1, 3)]
 
-        # Count all lucky star pairs
-        star_pair = tuple(sorted(star_nums))
-        star_pair_counts[star_pair] += 1
+        for num in main_numbers:
+            main_counts[num] += max(1, 10 - weeks_ago)
 
-    # Sort by most common
-    main_top = sorted(main_pair_counts.items(), key=lambda x: x[1], reverse=True)
-    star_top = sorted(star_pair_counts.items(), key=lambda x: x[1], reverse=True)
+        for star in star_numbers:
+            star_counts[star] += max(1, 10 - weeks_ago)
+
+    # 🧠 Return most frequent numbers
+    top_main = dict(main_counts.most_common(10))
+    top_stars = dict(star_counts.most_common(5))
+
+    print("🎯 Top Main Numbers:")
+    print(pd.Series(top_main))
+
+    print("⭐ Top Lucky Stars:")
+    print(pd.Series(top_stars))
 
     return {
-        "main_number_pairs": main_top,
-        "star_number_pairs": star_top
+        "top_main_numbers": list(top_main.keys()),
+        "top_star_numbers": list(top_stars.keys()),
     }
-
