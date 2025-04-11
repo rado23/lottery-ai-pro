@@ -1,35 +1,31 @@
-import requests
 import pandas as pd
-from datetime import datetime
-from io import StringIO
+import requests
+from bs4 import BeautifulSoup
 
-EUROMILLIONS_CSV_URL = "https://www.national-lottery.co.uk/results/euromillions/draw-history/csv"
-SAVE_PATH = "data/euromillions_draws.csv"
 
 def fetch_euromillions_data():
     print("📥 Fetching EuroMillions data from official website...")
+    url = "https://www.national-lottery.com/euromillions/results/history"
 
-    headers = {
-        "User-Agent": (
-            "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) "
-            "AppleWebKit/537.36 (KHTML, like Gecko) "
-            "Chrome/91.0.4472.114 Safari/537.36"
-        )
-    }
-
-    response = requests.get(EUROMILLIONS_CSV_URL, headers=headers)
+    response = requests.get(url)
     if response.status_code != 200:
         raise Exception(f"Failed to fetch data. Status code: {response.status_code}")
 
-    csv_data = response.content.decode("utf-8")
-    df = pd.read_csv(StringIO(csv_data))
+    soup = BeautifulSoup(response.text, "html.parser")
+    table = soup.find("table")
 
-    # Normalize column names
+    # Extract and parse the table into a DataFrame
+    df = pd.read_html(str(table))[0]
+
+    # ✅ Normalize column names to ensure 'date' exists
     df.columns = df.columns.str.strip().str.lower().str.replace(" ", "_")
 
+    print("✅ EuroMillions columns:", df.columns.tolist())  # Optional: log columns
     return df
 
+
 def save_euromillions_draws_csv():
+    print("📥 Downloading EuroMillions data...")
     df = fetch_euromillions_data()
-    df.to_csv(SAVE_PATH, index=False)
-    print(f"✅ EuroMillions results saved to {SAVE_PATH}")
+    df.to_csv("data/euromillions_draws.csv", index=False)
+    print("✅ EuroMillions results saved to data/euromillions_draws.csv")
