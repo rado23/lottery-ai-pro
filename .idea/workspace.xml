@@ -4,7 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="bcacea02-2198-49c5-886f-a6758278f12e" name="Changes" comment="Fix: Correct Lotto savings to CSV" />
+    <list default="true" id="bcacea02-2198-49c5-886f-a6758278f12e" name="Changes" comment="Fix: Limit ML Lotto to 6 numbers - simplification">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -322,7 +324,23 @@
       <option name="project" value="LOCAL" />
       <updated>1744411162320</updated>
     </task>
-    <option name="localTasksCounter" value="32" />
+    <task id="LOCAL-00032" summary="Fix: Limit ML Lotto to 6 numbers">
+      <option name="closed" value="true" />
+      <created>1744412069979</created>
+      <option name="number" value="00032" />
+      <option name="presentableId" value="LOCAL-00032" />
+      <option name="project" value="LOCAL" />
+      <updated>1744412069979</updated>
+    </task>
+    <task id="LOCAL-00033" summary="Fix: Limit ML Lotto to 6 numbers - simplification">
+      <option name="closed" value="true" />
+      <created>1744412452369</created>
+      <option name="number" value="00033" />
+      <option name="presentableId" value="LOCAL-00033" />
+      <option name="project" value="LOCAL" />
+      <updated>1744412452369</updated>
+    </task>
+    <option name="localTasksCounter" value="34" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -337,8 +355,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Feat:Added Thunderball predictors" />
-    <MESSAGE value="Fix:Handle dynamic CSV fetch" />
     <MESSAGE value="Fix:modify your Flask app.py file to use the PORT from the environment" />
     <MESSAGE value="Fix:Euromillions CSV issues" />
     <MESSAGE value="Feat:a /health route for uptime monitoring or auto-refresh options on data." />
@@ -362,6 +378,8 @@
     <MESSAGE value="Fix: Update the return in predict_thunderball_with_ml() to convert numpy.int64 types to native int." />
     <MESSAGE value="Feat: Add Lotto support" />
     <MESSAGE value="Fix: Correct Lotto savings to CSV" />
-    <option name="LAST_COMMIT_MESSAGE" value="Fix: Correct Lotto savings to CSV" />
+    <MESSAGE value="Fix: Limit ML Lotto to 6 numbers" />
+    <MESSAGE value="Fix: Limit ML Lotto to 6 numbers - simplification" />
+    <option name="LAST_COMMIT_MESSAGE" value="Fix: Limit ML Lotto to 6 numbers - simplification" />
   </component>
 </project>
