@@ -1,29 +1,35 @@
-# src/euromillions_predictor.py
 
+import pandas as pd
 import random
+from src.euromillions.euromillions_analyzer import analyze_euromillions_draws
 
-def weighted_random_sample(weights_dict, k):
-    numbers = list(weights_dict.keys())
-    weights = list(weights_dict.values())
-    return random.choices(numbers, weights=weights, k=k)
+def generate_euromillions_predictions(stats, num_predictions=10):
+    main_weights = stats["main_number_weights"]
+    star_weights = stats["star_number_weights"]
 
-def generate_euromillions_predictions(stats, sets=10):
+    main_numbers = list(main_weights.keys())
+    star_numbers = list(star_weights.keys())
+
+    main_probs = [main_weights[n] for n in main_numbers]
+    star_probs = [star_weights[s] for s in star_numbers]
+
+    # Normalize to probabilities
+    main_probs = [p / sum(main_probs) for p in main_probs]
+    star_probs = [p / sum(star_probs) for p in star_probs]
+
     predictions = []
+    for _ in range(num_predictions * 2):  # generate more for ranking
+        main = sorted(random.choices(main_numbers, weights=main_probs, k=5))
+        stars = sorted(random.choices(star_numbers, weights=star_probs, k=2))
+        predictions.append((main, stars))
 
-    for _ in range(sets):
-        main_numbers = set()
-        while len(main_numbers) < 5:
-            main_numbers.update(weighted_random_sample(stats["main_number_weights"], 5 - len(main_numbers)))
-        main_numbers = sorted(main_numbers)
+    # De-duplicate and rank by total weight (most probable first)
+    unique = {}
+    for main, stars in predictions:
+        key = tuple(main + stars)
+        score = sum(main_weights[n] for n in main) + sum(star_weights[s] for s in stars)
+        unique[key] = score
 
-        lucky_stars = set()
-        while len(lucky_stars) < 2:
-            lucky_stars.update(weighted_random_sample(stats["star_number_weights"], 2 - len(lucky_stars)))
-        lucky_stars = sorted(lucky_stars)
-
-        predictions.append({
-            "main_numbers": main_numbers,
-            "lucky_stars": lucky_stars
-        })
-
-    return predictions
+    ranked = sorted(unique.items(), key=lambda x: x[1], reverse=True)
+    top_10 = [list(k[:5]) + list(k[5:]) for k, _ in ranked[:10]]
+    return [{"main_numbers": combo[:5], "lucky_stars": combo[5:]} for combo in top_10]

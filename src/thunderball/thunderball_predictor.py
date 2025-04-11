@@ -1,47 +1,33 @@
+
 import pandas as pd
 import random
-from collections import defaultdict
+from src.thunderball.thunderball_analyzer import analyze_thunderball_draws
 
-def weighted_random_sample(weight_dict, k):
-    """
-    Sample k unique numbers from a weighted dictionary.
-    """
-    items = list(weight_dict.items())
-    population = [item[0] for item in items]
-    weights = [item[1] for item in items]
-    return random.choices(population=population, weights=weights, k=k)
+def generate_thunderball_predictions(stats, num_predictions=10):
+    main_freq = stats["main_freq"]
+    thunder_freq = stats["thunder_freq"]
 
-def generate_thunderball_predictions(n_sets=10):
-    # Load frequency data
-    main_freq_path = "data/thunderball_main_frequency.csv"
-    thunder_freq_path = "data/thunderball_star_frequency.csv"
+    main_numbers = list(main_freq.keys())
+    thunder_numbers = list(thunder_freq.keys())
 
-    main_df = pd.read_csv(main_freq_path, index_col=0)
-    thunder_df = pd.read_csv(thunder_freq_path, index_col=0)
+    main_probs = [main_freq[n] for n in main_numbers]
+    thunder_probs = [thunder_freq[t] for t in thunder_numbers]
 
-    # Convert frequency DataFrames to weight dictionaries
-    main_weights = defaultdict(int, main_df.to_dict()["count"])
-    thunder_weights = defaultdict(int, thunder_df.to_dict()["count"])
+    main_probs = [p / sum(main_probs) for p in main_probs]
+    thunder_probs = [p / sum(thunder_probs) for p in thunder_probs]
 
     predictions = []
+    for _ in range(num_predictions * 2):
+        main = sorted(random.choices(main_numbers, weights=main_probs, k=5))
+        thunder = random.choices(thunder_numbers, weights=thunder_probs, k=1)
+        predictions.append((main, thunder))
 
-    for _ in range(n_sets):
-        main_numbers = set()
-        while len(main_numbers) < 5:
-            sample = weighted_random_sample(main_weights, 1)[0]
-            main_numbers.add(sample)
+    unique = {}
+    for main, thunder in predictions:
+        key = tuple(main + thunder)
+        score = sum(main_freq[n] for n in main) + thunder_freq[thunder[0]]
+        unique[key] = score
 
-        thunderball = weighted_random_sample(thunder_weights, 1)[0]
-
-        predictions.append({
-            "main": sorted(main_numbers),
-            "thunderball": thunderball
-        })
-
-    return predictions
-
-# Debug mode: run directly
-if __name__ == "__main__":
-    sets = generate_thunderball_predictions()
-    for i, p in enumerate(sets, 1):
-        print(f"{i}: Main: {p['main']} | Thunderball: {p['thunderball']}")
+    ranked = sorted(unique.items(), key=lambda x: x[1], reverse=True)
+    top_10 = [list(k[:5]) + list(k[5:]) for k, _ in ranked[:10]]
+    return [{"main_numbers": combo[:5], "thunderball": combo[5]} for combo in top_10]
