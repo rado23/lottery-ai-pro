@@ -2,13 +2,17 @@ import pandas as pd
 from datetime import datetime
 from collections import Counter
 from itertools import combinations
+import re
 
+def clean_date_string(date_str):
+    return re.sub(r'(\d+)(st|nd|rd|th)', r'\1', str(date_str))
 
 def analyze_euromillions_draws():
     df = pd.read_csv("data/euromillions_draws.csv")
 
-    # 🔄 Match column name to normalized format
-    df["draw_date"] = pd.to_datetime(df["draw_date"])
+    # Clean and convert date column
+    df["draw_date"] = df["draw_date"].apply(clean_date_string)
+    df["draw_date"] = pd.to_datetime(df["draw_date"], errors="coerce", dayfirst=True)
 
     main_counts = Counter()
     star_counts = Counter()
@@ -28,7 +32,6 @@ def analyze_euromillions_draws():
         for star in star_numbers:
             star_counts[star] += max(1, 10 - weeks_ago)
 
-    # 🧠 Return most frequent numbers
     top_main = dict(main_counts.most_common(10))
     top_stars = dict(star_counts.most_common(5))
 
