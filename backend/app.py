@@ -16,9 +16,16 @@ from src.thunderball.thunderball_analyzer import analyze_thunderball_draws
 from src.thunderball.thunderball_ml_predictor import predict_thunderball_with_ml
 from src.thunderball.thunderball_predictor import generate_thunderball_predictions
 
+# --- Lotto ---
+from src.lotto.download_lotto_csv import save_lotto_draws_csv
+from src.lotto.lotto_predictor import generate_lotto_predictions
+from src.lotto.lotto_analyzer import analyze_lotto_draws
+from src.lotto.lotto_ml_predictor import predict_lotto_with_ml
+
 # 🧠 Load data on start
 save_thunderball_draws_csv()
 fetch_draws()
+save_lotto_draws_csv()
 
 # Initialize app
 app = Flask(__name__)
@@ -59,9 +66,6 @@ def predict_thunderball_ml():
 # --- Lotto Endpoints ---
 @app.route("/predict/lotto", methods=["GET"])
 def predict_lotto():
-    from src.lotto.lotto_analyzer import analyze_lotto_draws
-    from src.lotto.lotto_predictor import generate_lotto_predictions
-
     stats = analyze_lotto_draws()
     heuristic = generate_lotto_predictions(stats)
     return jsonify({"heuristic": heuristic})
@@ -69,9 +73,6 @@ def predict_lotto():
 
 @app.route("/predict/lotto-ml", methods=["GET"])
 def predict_lotto_ml():
-    from src.lotto.lotto_analyzer import analyze_lotto_draws
-    from src.lotto.lotto_ml_predictor import predict_lotto_with_ml
-
     df, main_cols = analyze_lotto_draws(return_raw=True)
     ml = predict_lotto_with_ml(df, main_cols)
     return jsonify({"ml": ml})
