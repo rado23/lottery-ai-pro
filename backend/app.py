@@ -17,12 +17,31 @@ from src.thunderball.download_thunderball_csv import save_thunderball_draws_csv
 app = Flask(__name__)
 CORS(app)
 
-# Download data at startup
+# --- Startup Downloads ---
 print("📥 Downloading EuroMillions data...")
 save_euromillions_draws_csv()
 
 print("📥 Downloading Thunderball data...")
 save_thunderball_draws_csv()
+
+
+# --- Health Check ---
+@app.route("/health", methods=["GET"])
+def health_check():
+    return jsonify({"status": "ok", "message": "Server is running"}), 200
+
+
+# --- Manual Refresh Endpoint ---
+@app.route("/refresh", methods=["POST"])
+def refresh_data():
+    try:
+        print("🔄 Refreshing EuroMillions data...")
+        save_euromillions_draws_csv()
+        print("🔄 Refreshing Thunderball data...")
+        save_thunderball_draws_csv()
+        return jsonify({"status": "success", "message": "Data refreshed successfully"}), 200
+    except Exception as e:
+        return jsonify({"status": "error", "message": str(e)}), 500
 
 
 # --- EuroMillions Endpoints ---
