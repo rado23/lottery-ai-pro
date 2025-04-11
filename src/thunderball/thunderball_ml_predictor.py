@@ -67,10 +67,12 @@ def predict_thunderball_with_ml(df, main_cols, thunder_col):
     thunder_model.fit(X, y_thunder)
     thunder_pred = thunder_model.predict(last_features)[0]
 
+    # ✅ Convert NumPy ints to Python ints
     return {
-        "main_numbers": sorted(main_preds),
-        "thunderball": thunder_pred
+        "main_numbers": sorted(int(n) for n in main_preds),
+        "thunderball": int(thunder_pred)
     }
+
 
 
 # === For testing directly ===
