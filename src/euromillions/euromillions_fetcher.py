@@ -1,7 +1,7 @@
 import pandas as pd
 import requests
 from bs4 import BeautifulSoup
-
+from io import StringIO
 
 def fetch_euromillions_data():
     print("📥 Fetching EuroMillions data from official website...")
@@ -14,13 +14,16 @@ def fetch_euromillions_data():
     soup = BeautifulSoup(response.text, "html.parser")
     table = soup.find("table")
 
-    # Extract and parse the table into a DataFrame
-    df = pd.read_html(str(table))[0]
+    # Extract and parse the table into a DataFrame (wrap with StringIO to avoid FutureWarning)
+    df = pd.read_html(StringIO(str(table)))[0]
 
-    # ✅ Normalize column names to ensure 'date' exists
-    df.columns = df.columns.str.strip().str.lower().str.replace(" ", "_")
+    # Rename columns to match analyzer expectations
+    df.columns = [
+        "draw_date", "ball_1", "ball_2", "ball_3", "ball_4", "ball_5",
+        "lucky_star_1", "lucky_star_2", "jackpot", "draw_machine"
+    ]
 
-    print("✅ EuroMillions columns:", df.columns.tolist())  # Optional: log columns
+    print("✅ EuroMillions columns:", df.columns.tolist())
     return df
 
 
