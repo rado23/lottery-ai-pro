@@ -4,11 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="bcacea02-2198-49c5-886f-a6758278f12e" name="Changes" comment="Feat:a /health route for uptime monitoring or auto-refresh options on data.">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/euromillions/euromillions_fetcher.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/euromillions/euromillions_fetcher.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/thunderball/download_thunderball_csv.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/thunderball/download_thunderball_csv.py" afterDir="false" />
-    </list>
+    <list default="true" id="bcacea02-2198-49c5-886f-a6758278f12e" name="Changes" comment="Fix: Fix the euromillions" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -166,7 +162,15 @@
       <option name="project" value="LOCAL" />
       <updated>1744385860045</updated>
     </task>
-    <option name="localTasksCounter" value="12" />
+    <task id="LOCAL-00012" summary="Fix: Fix the euromillions">
+      <option name="closed" value="true" />
+      <created>1744387689261</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1744387689261</updated>
+    </task>
+    <option name="localTasksCounter" value="13" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -192,6 +196,7 @@
     <MESSAGE value="Fix:modify your Flask app.py file to use the PORT from the environment" />
     <MESSAGE value="Fix:Euromillions CSV issues" />
     <MESSAGE value="Feat:a /health route for uptime monitoring or auto-refresh options on data." />
-    <option name="LAST_COMMIT_MESSAGE" value="Feat:a /health route for uptime monitoring or auto-refresh options on data." />
+    <MESSAGE value="Fix: Fix the euromillions" />
+    <option name="LAST_COMMIT_MESSAGE" value="Fix: Fix the euromillions" />
   </component>
 </project>
