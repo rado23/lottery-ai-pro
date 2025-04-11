@@ -44,7 +44,8 @@ def predict_euromillions_ml():
 
 @app.route("/predict/thunderball", methods=["GET"])
 def predict_thunderball():
-    stats = analyze_thunderball_draws()
+    df, main_cols, thunder_col = analyze_thunderball_draws()
+    stats = {"df": df, "main_cols": main_cols, "thunder_col": thunder_col}
     heuristic = generate_thunderball_predictions(stats)
     return jsonify({"heuristic": heuristic})
 

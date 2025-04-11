@@ -46,10 +46,8 @@ def analyze_thunderball_draws():
     main_freq.to_csv("data/thunderball_main_frequency.csv")
     thunder_freq.to_csv("data/thunderball_star_frequency.csv")
 
-    return {
-        "main_number_weights": main_freq.to_dict(),
-        "thunderball_weights": thunder_freq.to_dict()
-    }
+    # Return what's needed by app.py
+    return df, main_cols, thunder_col
 
 # ✅ Optional manual run
 if __name__ == "__main__":
