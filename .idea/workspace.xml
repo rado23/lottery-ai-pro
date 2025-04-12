@@ -370,7 +370,15 @@
       <option name="project" value="LOCAL" />
       <updated>1744416685290</updated>
     </task>
-    <option name="localTasksCounter" value="38" />
+    <task id="LOCAL-00038" summary="Fix: Correct SfL-ml to avoid 6 numbers">
+      <option name="closed" value="true" />
+      <created>1744417519949</created>
+      <option name="number" value="00038" />
+      <option name="presentableId" value="LOCAL-00038" />
+      <option name="project" value="LOCAL" />
+      <updated>1744417519949</updated>
+    </task>
+    <option name="localTasksCounter" value="39" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">

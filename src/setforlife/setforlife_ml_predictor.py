@@ -7,18 +7,18 @@ from sklearn.preprocessing import MultiLabelBinarizer
 from src.setforlife.setforlife_analyzer import analyze_setforlife_draws
 
 def number_frequency_features(df, main_cols, life_col):
-    # One-hot encode draws for 1-47
-    mlb = MultiLabelBinarizer(classes=range(1, 48))
+    mlb = MultiLabelBinarizer(classes=range(1, 48))  # 1-47 for main balls
     X = mlb.fit_transform(df[main_cols].values.tolist())
     X = pd.DataFrame(X[:-1])
 
-    # Extract numeric values cleanly
-    y_main = df[main_cols].apply(lambda col: col.astype(str).str.extract(r"(\d+)").astype(float)).astype(int).values[1:]
+    # Fix: apply regex to each cell individually
+    y_main = df[main_cols].applymap(lambda x: int(re.search(r"\d+", str(x)).group()) if pd.notna(x) else 0).values[1:]
     y_main_df = pd.DataFrame(y_main)
 
-    y_life = df[life_col].astype(str).str.extract(r"(\d+)").astype(float).astype(int).values[1:]
+    y_life = df[life_col].apply(lambda x: int(re.search(r"\d+", str(x)).group()) if pd.notna(x) else 0).values[1:]
 
     return X, y_main_df, y_life
+
 
 
 def predict_setforlife_with_ml(df, main_cols, life_col):
