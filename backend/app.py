@@ -28,6 +28,9 @@ from src.setforlife.setforlife_predictor import generate_setforlife_predictions
 from src.setforlife.setforlife_analyzer import analyze_setforlife_draws
 from src.setforlife.setforlife_ml_predictor import predict_setforlife_with_ml
 
+# Trends analyzer
+from src.trends.trends_analyzer import analyze_trends
+
 # Start background job scheduler
 from backend.scheduler import start_scheduler
 start_scheduler()
@@ -102,6 +105,16 @@ def predict_setforlife_ml():
     df, main_cols, life_col = analyze_setforlife_draws(return_raw=True)
     ml = predict_setforlife_with_ml(df, main_cols, life_col)
     return jsonify({"ml": ml})
+
+@app.route("/trends/<game>", methods=["GET"])
+def get_trends(game):
+    try:
+        trends = analyze_trends(game.lower())
+        return jsonify({"trends": trends})
+    except FileNotFoundError:
+        return jsonify({"error": f"No draw data found for game '{game}'"}), 404
+    except ValueError as e:
+        return jsonify({"error": str(e)}), 400
 
 
 # --- Start the server (Render sets the PORT env variable) ---
