@@ -11,7 +11,7 @@ def number_frequency_features(df, main_cols, life_col):
     X = mlb.fit_transform(df[main_cols].values.tolist())
 
     X = pd.DataFrame(X[:-1])
-    y_main = df[main_cols].values[1:]
+    y_main = df[main_cols].applymap(lambda x: int(re.search(r"\d+", str(x)).group()) if pd.notna(x) else 0).values[1:]
     y_main_df = pd.DataFrame(y_main)
 
     y_life = df[life_col].apply(lambda x: int(re.search(r"\d+", str(x)).group()) if pd.notna(x) else 0).values[1:]
