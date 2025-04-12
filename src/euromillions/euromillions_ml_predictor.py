@@ -5,6 +5,7 @@ import numpy as np
 from xgboost import XGBClassifier
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
+from sklearn.metrics import accuracy_score
 
 def create_label_mapping(values):
     sorted_unique = sorted(set(values))
@@ -44,9 +45,9 @@ def build_training_data():
 
     return X, y_main_mapped, y_star_mapped, label_maps_main, label_maps_star
 
-def train_models(X, y_list, num_classes):
+def train_models(X, y_list, num_classes, label_type):
     models = []
-    for y in y_list:
+    for idx, y in enumerate(y_list):
         model = XGBClassifier(
             n_estimators=100,
             max_depth=5,
@@ -54,7 +55,11 @@ def train_models(X, y_list, num_classes):
             eval_metric='mlogloss',
             num_class=num_classes
         )
-        model.fit(X, y)
+        X_train, X_val, y_train, y_val = train_test_split(X, y, test_size=0.15, random_state=42)
+        model.fit(X_train, y_train)
+        y_pred = model.predict(X_val)
+        acc = accuracy_score(y_val, y_pred)
+        print(f"✅ {label_type}_{idx+1} Accuracy: {acc:.3f}")
         models.append(model)
     return models
 
@@ -72,13 +77,15 @@ def predict_draw(models, X_sample, label_maps, k):
     # Pick top k unique values
     unique = []
     seen = set()
-    for value, _ in all_probs:
+    confidence = []
+    for value, prob in all_probs:
         if value not in seen:
             seen.add(value)
             unique.append(value)
+            confidence.append(prob)
         if len(unique) == k:
             break
-    return unique
+    return unique, confidence
 
 def predict_euromillions_with_ml():
     X, y_main, y_star, label_maps_main, label_maps_star = build_training_data()
@@ -92,15 +99,22 @@ def predict_euromillions_with_ml():
     y_main_train = [y[:-1] for y in y_main]
     y_star_train = [y[:-1] for y in y_star]
 
-    main_models = train_models(X_train, y_main_train, num_classes=51)
-    star_models = train_models(X_train, y_star_train, num_classes=13)
+    main_models = train_models(X_train, y_main_train, num_classes=51, label_type="Main")
+    star_models = train_models(X_train, y_star_train, num_classes=13, label_type="Star")
 
-    print("Generating ML prediction...")
+    print("🔮 Generating ML prediction...")
 
-    main_pred = predict_draw(main_models, X_pred, label_maps_main, k=5)
-    star_pred = predict_draw(star_models, X_pred, label_maps_star, k=2)
+    main_pred, main_conf = predict_draw(main_models, X_pred, label_maps_main, k=5)
+    star_pred, star_conf = predict_draw(star_models, X_pred, label_maps_star, k=2)
+
+    avg_main_conf = round(sum(main_conf) / len(main_conf), 4)
+    avg_star_conf = round(sum(star_conf) / len(star_conf), 4)
 
     return {
         "main_numbers": sorted(main_pred),
-        "lucky_stars": sorted(star_pred)
+        "lucky_stars": sorted(star_pred),
+        "confidence": {
+            "main_numbers": avg_main_conf,
+            "lucky_stars": avg_star_conf
+        }
     }

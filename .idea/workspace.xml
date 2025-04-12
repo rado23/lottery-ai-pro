@@ -4,14 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="bcacea02-2198-49c5-886f-a6758278f12e" name="Changes" comment="Feat: Add strategy_planner.py">
+    <list default="true" id="bcacea02-2198-49c5-886f-a6758278f12e" name="Changes" comment="Feat: Guarantee uniqueness">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/euromillions/euromillions_ml_predictor.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/euromillions/euromillions_ml_predictor.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/lotto/lotto_ml_predictor.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/lotto/lotto_ml_predictor.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/setforlife/setforlife_ml_predictor.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/setforlife/setforlife_ml_predictor.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/setforlife/setforlife_predictor.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/setforlife/setforlife_predictor.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/thunderball/thunderball_ml_predictor.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/thunderball/thunderball_ml_predictor.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/thunderball/thunderball_predictor.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/thunderball/thunderball_predictor.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -426,7 +423,15 @@
       <option name="project" value="LOCAL" />
       <updated>1744425023523</updated>
     </task>
-    <option name="localTasksCounter" value="44" />
+    <task id="LOCAL-00044" summary="Feat: Guarantee uniqueness">
+      <option name="closed" value="true" />
+      <created>1744487416876</created>
+      <option name="number" value="00044" />
+      <option name="presentableId" value="LOCAL-00044" />
+      <option name="project" value="LOCAL" />
+      <updated>1744487416876</updated>
+    </task>
+    <option name="localTasksCounter" value="45" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -441,7 +446,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Fix: Add lxml to requirements.txt" />
     <MESSAGE value="Fix: Fix date format" />
     <MESSAGE value="Fix: Rework columns names" />
     <MESSAGE value="Fix: Regenerate EM logic" />
@@ -466,6 +470,7 @@
     <MESSAGE value="Feat: Trends" />
     <MESSAGE value="Feat: Trends - update flask" />
     <MESSAGE value="Feat: Add strategy_planner.py" />
-    <option name="LAST_COMMIT_MESSAGE" value="Feat: Add strategy_planner.py" />
+    <MESSAGE value="Feat: Guarantee uniqueness" />
+    <option name="LAST_COMMIT_MESSAGE" value="Feat: Guarantee uniqueness" />
   </component>
 </project>
