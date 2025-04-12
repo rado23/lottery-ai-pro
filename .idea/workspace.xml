@@ -4,7 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="bcacea02-2198-49c5-886f-a6758278f12e" name="Changes" comment="Fix: Correct SfL-ml" />
+    <list default="true" id="bcacea02-2198-49c5-886f-a6758278f12e" name="Changes" comment="Fix: Correct SfL-ml to avoid 6 numbers" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -362,7 +362,15 @@
       <option name="project" value="LOCAL" />
       <updated>1744416168155</updated>
     </task>
-    <option name="localTasksCounter" value="37" />
+    <task id="LOCAL-00037" summary="Fix: Correct SfL-ml to avoid 6 numbers">
+      <option name="closed" value="true" />
+      <created>1744416685290</created>
+      <option name="number" value="00037" />
+      <option name="presentableId" value="LOCAL-00037" />
+      <option name="project" value="LOCAL" />
+      <updated>1744416685290</updated>
+    </task>
+    <option name="localTasksCounter" value="38" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -377,7 +385,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Fix: Fix the euromillions" />
     <MESSAGE value="Fix: update the app.run(...) line to explicitly bind to 0.0.0.0 and use the port" />
     <MESSAGE value="Fix: Import os" />
     <MESSAGE value="Fix: adjustment to ensure the &quot;date&quot; column is accessible" />
@@ -402,6 +409,7 @@
     <MESSAGE value="Fix: Improve ML model" />
     <MESSAGE value="Fix: Add Set For Life support" />
     <MESSAGE value="Fix: Correct SfL-ml" />
-    <option name="LAST_COMMIT_MESSAGE" value="Fix: Correct SfL-ml" />
+    <MESSAGE value="Fix: Correct SfL-ml to avoid 6 numbers" />
+    <option name="LAST_COMMIT_MESSAGE" value="Fix: Correct SfL-ml to avoid 6 numbers" />
   </component>
 </project>
