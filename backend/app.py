@@ -32,6 +32,10 @@ from src.setforlife.setforlife_ml_predictor import predict_setforlife_with_ml
 # Trends analyzer
 from src.trends.trends_analyzer import analyze_trends
 
+# Game meta data
+from src.strategy.strategy_planner import build_strategy
+
+
 # Start background job scheduler
 from backend.scheduler import start_scheduler
 start_scheduler()
@@ -118,6 +122,22 @@ def get_trends(game):
     except Exception as e:
         return jsonify({"error": str(e)}), 400
 
+
+# --- Game Meta Data ---
+@app.route("/strategy", methods=["POST"])
+def strategy_builder():
+    data = request.get_json()
+
+    funds = data.get("funds")
+    if funds is None or not isinstance(funds, (int, float)) or funds <= 0:
+        return jsonify({"error": "Invalid or missing 'funds' field"}), 400
+
+    selected_games = data.get("games")  # optional, should be list of strings
+    preference = data.get("preference", "any_big_win")
+    max_draws = data.get("max_draws", 1)
+
+    strategy = build_strategy(funds, selected_games, preference, max_draws)
+    return jsonify({"strategy": strategy})
 
 
 # --- Start the server (Render sets the PORT env variable) ---
