@@ -28,11 +28,16 @@ from src.setforlife.setforlife_predictor import generate_setforlife_predictions
 from src.setforlife.setforlife_analyzer import analyze_setforlife_draws
 from src.setforlife.setforlife_ml_predictor import predict_setforlife_with_ml
 
+# Start background job scheduler
+from backend.scheduler import start_scheduler
+start_scheduler()
+
 # 🧠 Load data on start
 save_thunderball_draws_csv()
 fetch_draws()
 save_lotto_draws_csv()
 save_setforlife_draws_csv()
+
 
 # Initialize app
 app = Flask(__name__)
