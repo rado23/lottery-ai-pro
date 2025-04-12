@@ -4,7 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="bcacea02-2198-49c5-886f-a6758278f12e" name="Changes" comment="Fix: Add Set For Life support" />
+    <list default="true" id="bcacea02-2198-49c5-886f-a6758278f12e" name="Changes" comment="Fix: Correct SfL-ml" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -354,7 +354,15 @@
       <option name="project" value="LOCAL" />
       <updated>1744415465262</updated>
     </task>
-    <option name="localTasksCounter" value="36" />
+    <task id="LOCAL-00036" summary="Fix: Correct SfL-ml">
+      <option name="closed" value="true" />
+      <created>1744416168155</created>
+      <option name="number" value="00036" />
+      <option name="presentableId" value="LOCAL-00036" />
+      <option name="project" value="LOCAL" />
+      <updated>1744416168155</updated>
+    </task>
+    <option name="localTasksCounter" value="37" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -369,7 +377,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Feat:a /health route for uptime monitoring or auto-refresh options on data." />
     <MESSAGE value="Fix: Fix the euromillions" />
     <MESSAGE value="Fix: update the app.run(...) line to explicitly bind to 0.0.0.0 and use the port" />
     <MESSAGE value="Fix: Import os" />
@@ -394,6 +401,7 @@
     <MESSAGE value="Fix: Limit ML Lotto to 6 numbers - simplification" />
     <MESSAGE value="Fix: Improve ML model" />
     <MESSAGE value="Fix: Add Set For Life support" />
-    <option name="LAST_COMMIT_MESSAGE" value="Fix: Add Set For Life support" />
+    <MESSAGE value="Fix: Correct SfL-ml" />
+    <option name="LAST_COMMIT_MESSAGE" value="Fix: Correct SfL-ml" />
   </component>
 </project>

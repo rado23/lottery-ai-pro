@@ -19,6 +19,9 @@ def number_frequency_features(df, main_cols, life_col):
     return X, y_main_df, y_life
 
 def predict_setforlife_with_ml(df, main_cols, life_col):
+    # Defensive fix inside function (optional)
+    main_cols = [col for col in main_cols if "life" not in col]
+
     X, y_main, y_life = number_frequency_features(df, main_cols, life_col)
 
     model = MultiOutputClassifier(RandomForestClassifier(n_estimators=100, random_state=42))
@@ -26,11 +29,14 @@ def predict_setforlife_with_ml(df, main_cols, life_col):
     last_features = X.iloc[[-1]]
     main_preds = model.predict(last_features)[0].tolist()
 
+    assert len(main_preds) == 5, f"Expected 5 main numbers, got {len(main_preds)}"
+
     life_model = RandomForestClassifier(n_estimators=100, random_state=42)
     life_model.fit(X, y_life)
     life_pred = int(life_model.predict(last_features)[0])
 
     return {
-        "main_numbers": sorted(main_preds),
+        "main_numbers": sorted(main_preds[:5]),
         "life_ball": life_pred
     }
+
