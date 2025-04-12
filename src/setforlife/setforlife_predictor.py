@@ -1,5 +1,17 @@
 import random
 
+def weighted_unique_sample(choices, weights, k):
+    """Sample k unique items based on weights without replacement."""
+    pool = list(zip(choices, weights))
+    result = []
+    for _ in range(min(k, len(pool))):
+        total_weight = sum(w for _, w in pool)
+        probs = [w / total_weight for _, w in pool]
+        pick = random.choices(pool, weights=probs, k=1)[0][0]
+        result.append(pick)
+        pool = [item for item in pool if item[0] != pick]
+    return sorted(result)
+
 def generate_setforlife_predictions(stats, num_predictions=10):
     main_freq = stats["main_number_weights"]
     life_freq = stats["life_ball_weights"]
@@ -15,7 +27,7 @@ def generate_setforlife_predictions(stats, num_predictions=10):
 
     predictions = []
     for _ in range(num_predictions * 2):  # generate more for uniqueness filtering
-        main = sorted(random.choices(main_numbers, weights=main_probs, k=5))
+        main = weighted_unique_sample(main_numbers, main_probs, k=5)
         life = random.choices(life_numbers, weights=life_probs, k=1)
         predictions.append((main, life))
 

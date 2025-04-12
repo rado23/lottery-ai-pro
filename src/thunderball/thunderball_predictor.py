@@ -1,6 +1,18 @@
 import pandas as pd
 import random
 
+def weighted_unique_sample(choices, weights, k):
+    """Sample k unique items based on weights without replacement."""
+    pool = list(zip(choices, weights))
+    result = []
+    for _ in range(min(k, len(pool))):
+        total_weight = sum(w for _, w in pool)
+        probs = [w / total_weight for _, w in pool]
+        pick = random.choices(pool, weights=probs, k=1)[0][0]
+        result.append(pick)
+        pool = [item for item in pool if item[0] != pick]
+    return sorted(result)
+
 def generate_thunderball_predictions(stats, num_predictions=10):
     df, main_cols, thunder_col = stats["df"], stats["main_cols"], stats["thunder_col"]
 
@@ -22,8 +34,8 @@ def generate_thunderball_predictions(stats, num_predictions=10):
     thunder_probs = [p / sum(thunder_probs) for p in thunder_probs]
 
     predictions = []
-    for _ in range(num_predictions * 2):
-        main = sorted(random.choices(list(main_freq.index), weights=main_probs, k=5))
+    for _ in range(num_predictions * 2):  # extra for deduplication
+        main = weighted_unique_sample(list(main_freq.index), main_probs, k=5)
         thunder = random.choices(list(thunder_freq.index), weights=thunder_probs, k=1)
         predictions.append((main, thunder))
 

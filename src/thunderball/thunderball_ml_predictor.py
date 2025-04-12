@@ -58,21 +58,32 @@ def number_frequency_features(df, main_cols, thunder_col):
 def predict_thunderball_with_ml(df, main_cols, thunder_col):
     X, y_main, y_thunder = number_frequency_features(df, main_cols, thunder_col)
 
+    # Train multioutput model for main numbers
     model = MultiOutputClassifier(RandomForestClassifier(n_estimators=100, random_state=42))
     model.fit(X, y_main)
     last_features = X.iloc[[-1]]
-    main_preds = model.predict(last_features)[0].tolist()
+    probas = model.predict_proba(last_features)
 
+    # Aggregate all predicted probabilities for each position
+    number_scores = {}
+    for i in range(5):
+        for idx, prob in enumerate(probas[i][0]):
+            number = idx + 1
+            number_scores[number] = number_scores.get(number, 0) + prob
+
+    # Get top 5 unique numbers by combined score
+    top_5 = sorted(number_scores.items(), key=lambda x: x[1], reverse=True)[:5]
+    main_preds = [int(num) for num, _ in top_5]
+
+    # Predict Thunderball separately
     thunder_model = RandomForestClassifier(n_estimators=100, random_state=42)
     thunder_model.fit(X, y_thunder)
-    thunder_pred = thunder_model.predict(last_features)[0]
+    thunder_pred = int(thunder_model.predict(last_features)[0])
 
-    # ✅ Convert NumPy ints to Python ints
     return {
-        "main_numbers": sorted(int(n) for n in main_preds),
-        "thunderball": int(thunder_pred)
+        "main_numbers": sorted(main_preds),
+        "thunderball": thunder_pred
     }
-
 
 
 # === For testing directly ===

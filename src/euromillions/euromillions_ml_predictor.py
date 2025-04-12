@@ -7,7 +7,6 @@ from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
 
 def create_label_mapping(values):
-    """Creates label-to-ID and ID-to-label mappings."""
     sorted_unique = sorted(set(values))
     label_map = {val: i for i, val in enumerate(sorted_unique)}
     reverse_map = {i: val for val, i in label_map.items()}
@@ -23,7 +22,6 @@ def build_training_data():
     labels_star = [[] for _ in range(2)]
 
     for _, row in df.iterrows():
-        # Basic features: timestamp, sum of main numbers, sum of stars
         f = [
             row["timestamp"],
             sum(row[f"main_{i+1}"] for i in range(5)),
@@ -38,7 +36,6 @@ def build_training_data():
 
     X = np.array(features)
 
-    # Create label mappings and remap labels to 0-based class IDs
     label_maps_main = [create_label_mapping(y) for y in labels_main]
     label_maps_star = [create_label_mapping(y) for y in labels_star]
 
@@ -61,16 +58,27 @@ def train_models(X, y_list, num_classes):
         models.append(model)
     return models
 
-def predict_draw(models, X_sample, label_maps, k=1):
-    preds = []
+def predict_draw(models, X_sample, label_maps, k):
+    all_probs = []
     for i, model in enumerate(models):
-        pred_probs = model.predict_proba(X_sample)
-        top_k = np.argsort(pred_probs[0])[-k:]
-        # Map predictions back to original values
+        probas = model.predict_proba(X_sample)[0]
         reverse_map = label_maps[i][1]
-        real_values = [reverse_map[label] for label in top_k]
-        preds.append(real_values)
-    return preds
+        probs_with_labels = [(reverse_map[j], probas[j]) for j in range(len(probas))]
+        all_probs.extend(probs_with_labels)
+
+    # Sort all by probability
+    all_probs.sort(key=lambda x: x[1], reverse=True)
+
+    # Pick top k unique values
+    unique = []
+    seen = set()
+    for value, _ in all_probs:
+        if value not in seen:
+            seen.add(value)
+            unique.append(value)
+        if len(unique) == k:
+            break
+    return unique
 
 def predict_euromillions_with_ml():
     X, y_main, y_star, label_maps_main, label_maps_star = build_training_data()
@@ -78,23 +86,21 @@ def predict_euromillions_with_ml():
     scaler = StandardScaler()
     X_scaled = scaler.fit_transform(X)
 
-    # Use all rows except the last for training
     X_train = X_scaled[:-1]
     X_pred = X_scaled[-1].reshape(1, -1)
 
-    # Slice all label arrays to match X_train
     y_main_train = [y[:-1] for y in y_main]
     y_star_train = [y[:-1] for y in y_star]
 
-    # Train models using sliced labels
     main_models = train_models(X_train, y_main_train, num_classes=51)
     star_models = train_models(X_train, y_star_train, num_classes=13)
 
     print("Generating ML prediction...")
-    main_pred = predict_draw(main_models, X_pred, label_maps_main, k=1)
-    star_pred = predict_draw(star_models, X_pred, label_maps_star, k=1)
+
+    main_pred = predict_draw(main_models, X_pred, label_maps_main, k=5)
+    star_pred = predict_draw(star_models, X_pred, label_maps_star, k=2)
 
     return {
-        "main_numbers": sorted(set(n for sublist in main_pred for n in sublist)),
-        "lucky_stars": sorted(set(s for sublist in star_pred for s in sublist))
+        "main_numbers": sorted(main_pred),
+        "lucky_stars": sorted(star_pred)
     }

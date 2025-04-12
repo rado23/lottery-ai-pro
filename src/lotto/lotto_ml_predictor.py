@@ -40,17 +40,17 @@ def predict_lotto_with_ml(df, main_cols):
     last_features = X.iloc[[-1]]
     probas = model.predict_proba(last_features)
 
-    # Extract probabilities for each number being in next draw
-    number_probs = []
+    number_scores = {}
     for idx, prob in enumerate(probas):
+        # Skip numbers without both classes
         if len(prob[0]) == 2:
-            number_probs.append((idx + 1, prob[0][1]))  # probability of "1"
+            number_scores[idx + 1] = prob[0][1]  # prob of being drawn
         else:
-            number_probs.append((idx + 1, 0))  # fallback for unseen labels
+            number_scores[idx + 1] = 0
 
-    # Sort and return top 6 most likely numbers
-    top_numbers = sorted(number_probs, key=lambda x: x[1], reverse=True)[:6]
-    selected_numbers = sorted([n for n, _ in top_numbers])
+    # Sort and pick top 6 unique numbers
+    top_6 = sorted(number_scores.items(), key=lambda x: x[1], reverse=True)[:6]
+    selected_numbers = sorted([int(num) for num, _ in top_6])
 
     return {
         "main_numbers": selected_numbers
