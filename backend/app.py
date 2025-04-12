@@ -2,6 +2,7 @@
 
 from flask import Flask, jsonify
 from flask_cors import CORS
+from flask import request
 import os
 
 # --- EuroMillions ---
@@ -106,15 +107,17 @@ def predict_setforlife_ml():
     ml = predict_setforlife_with_ml(df, main_cols, life_col)
     return jsonify({"ml": ml})
 
+
 @app.route("/trends/<game>", methods=["GET"])
 def get_trends(game):
     try:
-        trends = analyze_trends(game.lower())
+        draws = int(request.args.get("draws", 100))
+        recent_window = int(request.args.get("recent_window", 20))
+        trends = analyze_trends(game, draws=draws, short_term_window=recent_window)
         return jsonify({"trends": trends})
-    except FileNotFoundError:
-        return jsonify({"error": f"No draw data found for game '{game}'"}), 404
-    except ValueError as e:
+    except Exception as e:
         return jsonify({"error": str(e)}), 400
+
 
 
 # --- Start the server (Render sets the PORT env variable) ---
