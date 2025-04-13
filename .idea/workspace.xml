@@ -4,11 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="bcacea02-2198-49c5-886f-a6758278f12e" name="Changes" comment="Feat: Update README.md">
+    <list default="true" id="bcacea02-2198-49c5-886f-a6758278f12e" name="Changes" comment="Fix: Correct accuracy for EM">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/euromillions/euromillions_ml_predictor.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/euromillions/euromillions_ml_predictor.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/setforlife/setforlife_ml_predictor.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/setforlife/setforlife_ml_predictor.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/thunderball/thunderball_ml_predictor.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/thunderball/thunderball_ml_predictor.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -447,7 +444,23 @@
       <option name="project" value="LOCAL" />
       <updated>1744492821812</updated>
     </task>
-    <option name="localTasksCounter" value="47" />
+    <task id="LOCAL-00047" summary="Fix: Correct accuracy for games">
+      <option name="closed" value="true" />
+      <created>1744533650866</created>
+      <option name="number" value="00047" />
+      <option name="presentableId" value="LOCAL-00047" />
+      <option name="project" value="LOCAL" />
+      <updated>1744533650866</updated>
+    </task>
+    <task id="LOCAL-00048" summary="Fix: Correct accuracy for EM">
+      <option name="closed" value="true" />
+      <created>1744533960408</created>
+      <option name="number" value="00048" />
+      <option name="presentableId" value="LOCAL-00048" />
+      <option name="project" value="LOCAL" />
+      <updated>1744533960408</updated>
+    </task>
+    <option name="localTasksCounter" value="49" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -462,8 +475,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Fix: Regenerate EM logic" />
-    <MESSAGE value="Fix: Regenerate app.py" />
     <MESSAGE value="Fix: Move all logic inside the analyze_thunderball_draws() function" />
     <MESSAGE value="Fix: Recreate a simple version of both generators directly in app.py" />
     <MESSAGE value="Fix: Fic thunderball-ml" />
@@ -487,6 +498,8 @@
     <MESSAGE value="Feat: Guarantee uniqueness" />
     <MESSAGE value="Feat: Enhancements to ML" />
     <MESSAGE value="Feat: Update README.md" />
-    <option name="LAST_COMMIT_MESSAGE" value="Feat: Update README.md" />
+    <MESSAGE value="Fix: Correct accuracy for games" />
+    <MESSAGE value="Fix: Correct accuracy for EM" />
+    <option name="LAST_COMMIT_MESSAGE" value="Fix: Correct accuracy for EM" />
   </component>
 </project>

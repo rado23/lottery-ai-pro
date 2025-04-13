@@ -45,9 +45,12 @@ def build_training_data():
 
     return X, y_main_mapped, y_star_mapped, label_maps_main, label_maps_star
 
-def train_models(X, y_list, num_classes, label_type):
+def train_models(X, y_list, label_type):
     models = []
     for idx, y in enumerate(y_list):
+        unique_classes = np.unique(y)
+        num_classes = len(unique_classes)
+
         model = XGBClassifier(
             n_estimators=100,
             max_depth=5,
@@ -55,6 +58,7 @@ def train_models(X, y_list, num_classes, label_type):
             eval_metric='mlogloss',
             num_class=num_classes
         )
+
         X_train, X_val, y_train, y_val = train_test_split(X, y, test_size=0.15, random_state=42)
         model.fit(X_train, y_train)
         y_pred = model.predict(X_val)
@@ -62,6 +66,7 @@ def train_models(X, y_list, num_classes, label_type):
         print(f"✅ {label_type}_{idx+1} Accuracy: {acc:.3f}")
         models.append(model)
     return models
+
 
 def predict_draw(models, X_sample, label_maps, k):
     all_probs = []
@@ -99,8 +104,8 @@ def predict_euromillions_with_ml():
     y_main_train = [y[:-1] for y in y_main]
     y_star_train = [y[:-1] for y in y_star]
 
-    main_models = train_models(X_train, y_main_train, num_classes=51, label_type="Main")
-    star_models = train_models(X_train, y_star_train, num_classes=13, label_type="Star")
+    main_models = train_models(X_train, y_main_train, label_type="Main")
+    star_models = train_models(X_train, y_star_train, label_type="Star")
 
     print("🔮 Generating ML prediction...")
 
