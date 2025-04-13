@@ -48,7 +48,8 @@ def build_training_data():
 def train_models(X, y_list, label_type):
     models = []
     for idx, y in enumerate(y_list):
-        unique_classes = np.unique(y)
+        # Remap y to consecutive integers
+        unique_classes, y_mapped = np.unique(y, return_inverse=True)
         num_classes = len(unique_classes)
 
         model = XGBClassifier(
@@ -59,13 +60,16 @@ def train_models(X, y_list, label_type):
             num_class=num_classes
         )
 
-        X_train, X_val, y_train, y_val = train_test_split(X, y, test_size=0.15, random_state=42)
-        model.fit(X_train, y_train)
+        X_train, X_val, y_train_raw, y_val_raw = train_test_split(X, y_mapped, test_size=0.15, random_state=42)
+
+        model.fit(X_train, y_train_raw)
         y_pred = model.predict(X_val)
-        acc = accuracy_score(y_val, y_pred)
+        acc = accuracy_score(y_val_raw, y_pred)
+
         print(f"✅ {label_type}_{idx+1} Accuracy: {acc:.3f}")
         models.append(model)
     return models
+
 
 
 def predict_draw(models, X_sample, label_maps, k):
