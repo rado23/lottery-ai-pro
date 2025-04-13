@@ -4,7 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="bcacea02-2198-49c5-886f-a6758278f12e" name="Changes" comment="Fix: Correct accuracy for EM. &#10;&#10;train_models() now returns (model, reverse_map) tuples ✅&#10;&#10;predict_draw() is adjusted to unpack those tuples ✅&#10;&#10;The call to predict_draw() no longer passes label_maps ✅" />
+    <list default="true" id="bcacea02-2198-49c5-886f-a6758278f12e" name="Changes" comment="Fix: Correct accuracy for EM. &#10;&#10;Replace that line with a safe fallback, ensuring y_val stays aligned with y_pred">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -73,14 +75,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1744102537303</updated>
-    </task>
-    <task id="LOCAL-00003" summary="Introduced absolute path">
-      <option name="closed" value="true" />
-      <created>1744113469120</created>
-      <option name="number" value="00003" />
-      <option name="presentableId" value="LOCAL-00003" />
-      <option name="project" value="LOCAL" />
-      <updated>1744113469120</updated>
     </task>
     <task id="LOCAL-00004" summary="Corrected order of imports">
       <option name="closed" value="true" />
@@ -466,7 +460,15 @@
       <option name="project" value="LOCAL" />
       <updated>1744537789290</updated>
     </task>
-    <option name="localTasksCounter" value="52" />
+    <task id="LOCAL-00052" summary="Fix: Correct accuracy for EM. &#10;&#10;Replace that line with a safe fallback, ensuring y_val stays aligned with y_pred">
+      <option name="closed" value="true" />
+      <created>1744538864046</created>
+      <option name="number" value="00052" />
+      <option name="presentableId" value="LOCAL-00052" />
+      <option name="project" value="LOCAL" />
+      <updated>1744538864046</updated>
+    </task>
+    <option name="localTasksCounter" value="53" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -481,7 +483,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Fix: May model more AI" />
     <MESSAGE value="Fix: Remove duplication in app.py" />
     <MESSAGE value="Fix: Corrections to Thunderball files" />
     <MESSAGE value="Fix: explicitly match only the actual number columns" />
@@ -506,6 +507,7 @@
     <MESSAGE value="Fix: Correct accuracy for EM. &#10;&#10;We should not hardcode num_class, but rather determine it dynamically from the labels used to train each model." />
     <MESSAGE value="Fix: Correct accuracy for EM. &#10;&#10;Re-map y to consecutive class indices" />
     <MESSAGE value="Fix: Correct accuracy for EM. &#10;&#10;train_models() now returns (model, reverse_map) tuples ✅&#10;&#10;predict_draw() is adjusted to unpack those tuples ✅&#10;&#10;The call to predict_draw() no longer passes label_maps ✅" />
-    <option name="LAST_COMMIT_MESSAGE" value="Fix: Correct accuracy for EM. &#10;&#10;train_models() now returns (model, reverse_map) tuples ✅&#10;&#10;predict_draw() is adjusted to unpack those tuples ✅&#10;&#10;The call to predict_draw() no longer passes label_maps ✅" />
+    <MESSAGE value="Fix: Correct accuracy for EM. &#10;&#10;Replace that line with a safe fallback, ensuring y_val stays aligned with y_pred" />
+    <option name="LAST_COMMIT_MESSAGE" value="Fix: Correct accuracy for EM. &#10;&#10;Replace that line with a safe fallback, ensuring y_val stays aligned with y_pred" />
   </component>
 </project>

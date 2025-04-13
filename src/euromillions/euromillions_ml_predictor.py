@@ -115,14 +115,15 @@ def predict_euromillions_with_ml():
     main_pred, main_conf = predict_draw(main_models, X_pred, k=5)
     star_pred, star_conf = predict_draw(star_models, X_pred, k=2)
 
-    avg_main_conf = round(sum(main_conf) / len(main_conf), 4)
-    avg_star_conf = round(sum(star_conf) / len(star_conf), 4)
+    avg_main_conf = round(float(sum(main_conf)) / len(main_conf), 4)
+    avg_star_conf = round(float(sum(star_conf)) / len(star_conf), 4)
 
     return {
-        "main_numbers": sorted(main_pred),
-        "lucky_stars": sorted(star_pred),
+        "main_numbers": sorted(int(n) for n in main_pred),
+        "lucky_stars": sorted(int(s) for s in star_pred),
         "confidence": {
-            "main_numbers": avg_main_conf,
-            "lucky_stars": avg_star_conf
+            "main_numbers": round(float(sum(main_conf)) / len(main_conf), 4),
+            "lucky_stars": round(float(sum(star_conf)) / len(star_conf), 4)
         }
     }
+
