@@ -65,7 +65,10 @@ def predict_thunderball_with_ml(df, main_cols, thunder_col):
     model.fit(X_train, y_train)
 
     y_pred_main = model.predict(X_val)
-    acc_main = accuracy_score(y_val, y_pred_main)
+    acc_main = np.mean([
+        accuracy_score(y_val.iloc[:, i], y_pred_main[:, i])
+        for i in range(y_val.shape[1])
+    ])
     print(f"✅ Main Numbers Model Accuracy: {acc_main:.3f}")
 
     last_features = X.iloc[[-1]]
