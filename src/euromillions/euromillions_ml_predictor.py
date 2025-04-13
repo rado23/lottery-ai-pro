@@ -36,21 +36,21 @@ def build_training_data():
             labels_star[i].append(row[f"star_{i+1}"])
 
     X = np.array(features)
-
-    label_maps_main = [create_label_mapping(y) for y in labels_main]
-    label_maps_star = [create_label_mapping(y) for y in labels_star]
-
-    y_main_mapped = [np.array([label_maps_main[i][0][val] for val in labels_main[i]]) for i in range(5)]
-    y_star_mapped = [np.array([label_maps_star[i][0][val] for val in labels_star[i]]) for i in range(2)]
-
-    return X, y_main_mapped, y_star_mapped, label_maps_main, label_maps_star
+    return X, labels_main, labels_star
 
 def train_models(X, y_list, label_type):
     models = []
-    for idx, y in enumerate(y_list):
-        # Remap y to consecutive integers
-        unique_classes, y_mapped = np.unique(y, return_inverse=True)
-        num_classes = len(unique_classes)
+    for idx, y_raw in enumerate(y_list):
+        X_train, X_val, y_train_raw, y_val_raw = train_test_split(X, y_raw, test_size=0.15, random_state=42)
+
+        # Create label map only for the training set
+        label_map = {val: i for i, val in enumerate(sorted(set(y_train_raw)))}
+        reverse_map = {i: val for val, i in label_map.items()}
+
+        y_train = np.array([label_map[val] for val in y_train_raw])
+        y_val = np.array([label_map[val] for val in y_val_raw if val in label_map])
+
+        num_classes = len(label_map)
 
         model = XGBClassifier(
             n_estimators=100,
@@ -59,24 +59,18 @@ def train_models(X, y_list, label_type):
             eval_metric='mlogloss',
             num_class=num_classes
         )
+        model.fit(X_train, y_train)
 
-        X_train, X_val, y_train_raw, y_val_raw = train_test_split(X, y_mapped, test_size=0.15, random_state=42)
-
-        model.fit(X_train, y_train_raw)
         y_pred = model.predict(X_val)
-        acc = accuracy_score(y_val_raw, y_pred)
-
+        acc = accuracy_score(y_val, y_pred)
         print(f"✅ {label_type}_{idx+1} Accuracy: {acc:.3f}")
-        models.append(model)
+        models.append((model, reverse_map))
     return models
 
-
-
-def predict_draw(models, X_sample, label_maps, k):
+def predict_draw(models, X_sample, k):
     all_probs = []
-    for i, model in enumerate(models):
+    for model, reverse_map in models:
         probas = model.predict_proba(X_sample)[0]
-        reverse_map = label_maps[i][1]
         probs_with_labels = [(reverse_map[j], probas[j]) for j in range(len(probas))]
         all_probs.extend(probs_with_labels)
 
@@ -97,7 +91,7 @@ def predict_draw(models, X_sample, label_maps, k):
     return unique, confidence
 
 def predict_euromillions_with_ml():
-    X, y_main, y_star, label_maps_main, label_maps_star = build_training_data()
+    X, y_main, y_star = build_training_data()
 
     scaler = StandardScaler()
     X_scaled = scaler.fit_transform(X)
@@ -113,8 +107,8 @@ def predict_euromillions_with_ml():
 
     print("🔮 Generating ML prediction...")
 
-    main_pred, main_conf = predict_draw(main_models, X_pred, label_maps_main, k=5)
-    star_pred, star_conf = predict_draw(star_models, X_pred, label_maps_star, k=2)
+    main_pred, main_conf = predict_draw(main_models, X_pred, k=5)
+    star_pred, star_conf = predict_draw(star_models, X_pred, k=2)
 
     avg_main_conf = round(sum(main_conf) / len(main_conf), 4)
     avg_star_conf = round(sum(star_conf) / len(star_conf), 4)
