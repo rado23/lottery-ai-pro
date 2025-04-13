@@ -48,24 +48,29 @@ def train_models(X, y_list, label_type):
         reverse_map = {i: val for val, i in label_map.items()}
 
         y_train = np.array([label_map[val] for val in y_train_raw])
-        y_val = np.array([label_map[val] for val in y_val_raw if val in label_map])
-
-        num_classes = len(label_map)
+        y_val = np.array([label_map.get(val, -1) for val in y_val_raw])
 
         model = XGBClassifier(
             n_estimators=100,
             max_depth=5,
             use_label_encoder=False,
             eval_metric='mlogloss',
-            num_class=num_classes
+            num_class=len(label_map)
         )
         model.fit(X_train, y_train)
 
         y_pred = model.predict(X_val)
+
+        # Filter out -1 values from accuracy evaluation
+        valid_indices = y_val != -1
+        y_val = y_val[valid_indices]
+        y_pred = y_pred[valid_indices]
+
         acc = accuracy_score(y_val, y_pred)
         print(f"✅ {label_type}_{idx+1} Accuracy: {acc:.3f}")
         models.append((model, reverse_map))
     return models
+
 
 def predict_draw(models, X_sample, k):
     all_probs = []
