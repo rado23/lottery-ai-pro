@@ -4,7 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="bcacea02-2198-49c5-886f-a6758278f12e" name="Changes" comment="Fix: Correct EM-ML. &#10;&#10;Fix predictors: ML" />
+    <list default="true" id="bcacea02-2198-49c5-886f-a6758278f12e" name="Changes" comment="Fix: Correct EM-ML. &#10;&#10;Fix predictors: euromillions_predictor.py" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -73,14 +73,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1744102537303</updated>
-    </task>
-    <task id="LOCAL-00009" summary="Fix:modify your Flask app.py file to use the PORT from the environment">
-      <option name="closed" value="true" />
-      <created>1744316547510</created>
-      <option name="number" value="00009" />
-      <option name="presentableId" value="LOCAL-00009" />
-      <option name="project" value="LOCAL" />
-      <updated>1744316547510</updated>
     </task>
     <task id="LOCAL-00010" summary="Fix:Euromillions CSV issues">
       <option name="closed" value="true" />
@@ -466,7 +458,15 @@
       <option name="project" value="LOCAL" />
       <updated>1746548054664</updated>
     </task>
-    <option name="localTasksCounter" value="58" />
+    <task id="LOCAL-00058" summary="Fix: Correct EM-ML. &#10;&#10;Fix predictors: euromillions_predictor.py">
+      <option name="closed" value="true" />
+      <created>1746548519423</created>
+      <option name="number" value="00058" />
+      <option name="presentableId" value="LOCAL-00058" />
+      <option name="project" value="LOCAL" />
+      <updated>1746548519423</updated>
+    </task>
+    <option name="localTasksCounter" value="59" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -481,7 +481,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Fix: Correct Lotto savings to CSV" />
     <MESSAGE value="Fix: Limit ML Lotto to 6 numbers" />
     <MESSAGE value="Fix: Limit ML Lotto to 6 numbers - simplification" />
     <MESSAGE value="Fix: Improve ML model" />
@@ -506,6 +505,7 @@
     <MESSAGE value="Fix: Correct EM-ML. &#10;&#10;Import pandas" />
     <MESSAGE value="Fix: Correct EM-ML. &#10;&#10;Fix predictors" />
     <MESSAGE value="Fix: Correct EM-ML. &#10;&#10;Fix predictors: ML" />
-    <option name="LAST_COMMIT_MESSAGE" value="Fix: Correct EM-ML. &#10;&#10;Fix predictors: ML" />
+    <MESSAGE value="Fix: Correct EM-ML. &#10;&#10;Fix predictors: euromillions_predictor.py" />
+    <option name="LAST_COMMIT_MESSAGE" value="Fix: Correct EM-ML. &#10;&#10;Fix predictors: euromillions_predictor.py" />
   </component>
 </project>

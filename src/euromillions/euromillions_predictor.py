@@ -22,7 +22,7 @@ def weighted_unique_sample(population, weights, k):
         weights = np.delete(weights, idx)
     return sorted(selected)
 
-def generate_prediction(stats, k=10):
+def generate_euromillions_predictions(stats, k=10):
     all_main = stats["main_counts"].sort_values(ascending=False).index.tolist()
     all_stars = stats["star_counts"].sort_values(ascending=False).index.tolist()
 
@@ -48,6 +48,6 @@ def generate_prediction(stats, k=10):
 
 def predict_euromillions():
     stats = analyze_euromillions_draws()
-    predictions = generate_prediction(stats, k=10)
+    predictions = generate_euromillions_predictions(stats, k=10)
 
     return {"heuristic": predictions}
