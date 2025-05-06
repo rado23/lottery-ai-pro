@@ -1,6 +1,23 @@
+# src/euromillions_predictor.py
 
-import pandas as pd
-import random
+import numpy as np
+
+def weighted_unique_sample(population, weights, k):
+    """
+    Sample k unique elements from a weighted population without replacement.
+    """
+    population = list(population)
+    weights = np.array(weights)
+    selected = []
+    for _ in range(k):
+        total = weights.sum()
+        probs = weights / total
+        choice = np.random.choice(population, p=probs)
+        idx = population.index(choice)
+        selected.append(choice)
+        population.pop(idx)
+        weights = np.delete(weights, idx)
+    return sorted(selected)
 from src.euromillions.euromillions_analyzer import analyze_euromillions_draws
 
 def generate_euromillions_predictions(stats, num_predictions=10):
@@ -19,8 +36,8 @@ def generate_euromillions_predictions(stats, num_predictions=10):
 
     predictions = []
     for _ in range(num_predictions * 2):  # generate more for ranking
-        main = sorted(random.choices(main_numbers, weights=main_probs, k=5))
-        stars = sorted(random.choices(star_numbers, weights=star_probs, k=2))
+        main = weighted_unique_sample(main_numbers, main_probs, 5)
+        stars = weighted_unique_sample(star_numbers, star_probs, 2)
         predictions.append((main, stars))
 
     # De-duplicate and rank by total weight (most probable first)

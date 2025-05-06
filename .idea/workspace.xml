@@ -4,8 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="bcacea02-2198-49c5-886f-a6758278f12e" name="Changes" comment="Fix: Correct accuracy for EM. &#10;&#10;Replace that line with a safe fallback, ensuring y_val stays aligned with y_pred">
+    <list default="true" id="bcacea02-2198-49c5-886f-a6758278f12e" name="Changes" comment="Fix: Correct EM-ML. &#10;&#10;Convert all float32 values to native Python float using float()">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/euromillions/euromillions_predictor.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/euromillions/euromillions_predictor.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -22,21 +23,21 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
-  "lastFilter": {
-    "state": "OPEN",
-    "assignee": "rado23"
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;rado23&quot;
   }
-}]]></component>
-  <component name="GithubPullRequestsUISettings"><![CDATA[{
-  "selectedUrlAndAccountId": {
-    "url": "https://github.com/rado23/lottery-ai-pro",
-    "accountId": "dada4b12-faaf-4308-9e26-29af9366949c"
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/rado23/lottery-ai-pro&quot;,
+    &quot;accountId&quot;: &quot;dada4b12-faaf-4308-9e26-29af9366949c&quot;
   }
-}]]></component>
-  <component name="ProjectColorInfo"><![CDATA[{
-  "associatedIndex": 3
-}]]></component>
+}</component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 3
+}</component>
   <component name="ProjectId" id="2vRKdw91IcN9SUKmnZYpEQzqJY0" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true">
     <ConfirmationsSetting value="2" id="Add" />
@@ -45,15 +46,15 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "ASKED_SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "git-widget-placeholder": "master"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;ASKED_SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;master&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/src/thunderball" />
@@ -75,14 +76,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1744102537303</updated>
-    </task>
-    <task id="LOCAL-00004" summary="Corrected order of imports">
-      <option name="closed" value="true" />
-      <created>1744113536836</created>
-      <option name="number" value="00004" />
-      <option name="presentableId" value="LOCAL-00004" />
-      <option name="project" value="LOCAL" />
-      <updated>1744113536836</updated>
     </task>
     <task id="LOCAL-00005" summary="Added .gitignore">
       <option name="closed" value="true" />
@@ -468,7 +461,15 @@
       <option name="project" value="LOCAL" />
       <updated>1744538864046</updated>
     </task>
-    <option name="localTasksCounter" value="53" />
+    <task id="LOCAL-00053" summary="Fix: Correct EM-ML. &#10;&#10;Convert all float32 values to native Python float using float()">
+      <option name="closed" value="true" />
+      <created>1744542323663</created>
+      <option name="number" value="00053" />
+      <option name="presentableId" value="LOCAL-00053" />
+      <option name="project" value="LOCAL" />
+      <updated>1744542323663</updated>
+    </task>
+    <option name="localTasksCounter" value="54" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -483,7 +484,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Fix: Remove duplication in app.py" />
     <MESSAGE value="Fix: Corrections to Thunderball files" />
     <MESSAGE value="Fix: explicitly match only the actual number columns" />
     <MESSAGE value="Fix: Update the return in predict_thunderball_with_ml() to convert numpy.int64 types to native int." />
@@ -508,6 +508,7 @@
     <MESSAGE value="Fix: Correct accuracy for EM. &#10;&#10;Re-map y to consecutive class indices" />
     <MESSAGE value="Fix: Correct accuracy for EM. &#10;&#10;train_models() now returns (model, reverse_map) tuples ✅&#10;&#10;predict_draw() is adjusted to unpack those tuples ✅&#10;&#10;The call to predict_draw() no longer passes label_maps ✅" />
     <MESSAGE value="Fix: Correct accuracy for EM. &#10;&#10;Replace that line with a safe fallback, ensuring y_val stays aligned with y_pred" />
-    <option name="LAST_COMMIT_MESSAGE" value="Fix: Correct accuracy for EM. &#10;&#10;Replace that line with a safe fallback, ensuring y_val stays aligned with y_pred" />
+    <MESSAGE value="Fix: Correct EM-ML. &#10;&#10;Convert all float32 values to native Python float using float()" />
+    <option name="LAST_COMMIT_MESSAGE" value="Fix: Correct EM-ML. &#10;&#10;Convert all float32 values to native Python float using float()" />
   </component>
 </project>
