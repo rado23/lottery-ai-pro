@@ -1,4 +1,3 @@
-
 # src/euromillions_ml_predictor.py
 
 import pandas as pd
@@ -19,16 +18,16 @@ def build_training_data():
 
     for _, row in df.iterrows():
         f = [
-            row["timestamp"],
-            sum(row[f"main_{i+1}"] for i in range(5)),
-            sum(row[f"star_{i+1}"] for i in range(2))
+            int(row["timestamp"]),
+            int(sum(row[f"main_{i+1}"] for i in range(5))),
+            int(sum(row[f"star_{i+1}"] for i in range(2)))
         ]
         features.append(f)
 
         for i in range(5):
-            labels_main[i].append(row[f"main_{i+1}"])
+            labels_main[i].append(int(row[f"main_{i+1}"]))
         for i in range(2):
-            labels_star[i].append(row[f"star_{i+1}"])
+            labels_star[i].append(int(row[f"star_{i+1}"]))
 
     X = np.array(features)
     return X, labels_main, labels_star
@@ -55,36 +54,30 @@ def train_models(X, y_list, label_type):
 
         y_pred = model.predict(X_val)
         valid_indices = y_val != -1
-        y_val = y_val[valid_indices]
-        y_pred = y_pred[valid_indices]
-
-        acc = accuracy_score(y_val, y_pred)
+        acc = accuracy_score(y_val[valid_indices], y_pred[valid_indices])
         print(f"✅ {label_type}_{idx+1} Accuracy: {acc:.3f}")
         models.append((model, reverse_map))
     return models
 
 def predict_draw(models, X_sample, k):
-    """ Predicts top-k most probable unique numbers from ensemble models """
     all_probs = []
     for model, reverse_map in models:
         probas = model.predict_proba(X_sample)[0]
-        all_probs.extend((reverse_map[j], probas[j]) for j in range(len(probas)))
+        probs_with_labels = [(int(reverse_map[j]), float(probas[j])) for j in range(len(probas))]
+        all_probs.extend(probs_with_labels)
 
-    # Sort by probability and return top-k unique
     all_probs.sort(key=lambda x: x[1], reverse=True)
 
-    seen = set()
     unique = []
+    seen = set()
     confidence = []
-
     for value, prob in all_probs:
         if value not in seen:
             seen.add(value)
-            unique.append(value)
-            confidence.append(prob)
+            unique.append(int(value))
+            confidence.append(float(prob))
         if len(unique) == k:
             break
-
     return unique, confidence
 
 def predict_euromillions_with_ml():
@@ -108,8 +101,8 @@ def predict_euromillions_with_ml():
     star_pred, star_conf = predict_draw(star_models, X_pred, k=2)
 
     return {
-        "main_numbers": sorted(int(n) for n in main_pred),
-        "lucky_stars": sorted(int(s) for s in star_pred),
+        "main_numbers": sorted(main_pred),
+        "lucky_stars": sorted(star_pred),
         "confidence": {
             "main_numbers": round(sum(main_conf) / len(main_conf), 4),
             "lucky_stars": round(sum(star_conf) / len(star_conf), 4)
