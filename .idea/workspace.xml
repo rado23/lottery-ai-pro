@@ -4,9 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="bcacea02-2198-49c5-886f-a6758278f12e" name="Changes" comment="Fix: Correct EM-ML. &#10;&#10;Convert all float32 values to native Python float using float()">
+    <list default="true" id="bcacea02-2198-49c5-886f-a6758278f12e" name="Changes" comment="Fix: Correct EM-ML. &#10;&#10;Ensure uniqueness of results">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/euromillions/euromillions_predictor.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/euromillions/euromillions_predictor.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -76,14 +75,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1744102537303</updated>
-    </task>
-    <task id="LOCAL-00005" summary="Added .gitignore">
-      <option name="closed" value="true" />
-      <created>1744113775191</created>
-      <option name="number" value="00005" />
-      <option name="presentableId" value="LOCAL-00005" />
-      <option name="project" value="LOCAL" />
-      <updated>1744113775191</updated>
     </task>
     <task id="LOCAL-00006" summary="Fix: Fetch data on startup for Render deployment">
       <option name="closed" value="true" />
@@ -469,7 +460,15 @@
       <option name="project" value="LOCAL" />
       <updated>1744542323663</updated>
     </task>
-    <option name="localTasksCounter" value="54" />
+    <task id="LOCAL-00054" summary="Fix: Correct EM-ML. &#10;&#10;Ensure uniqueness of results">
+      <option name="closed" value="true" />
+      <created>1746544422651</created>
+      <option name="number" value="00054" />
+      <option name="presentableId" value="LOCAL-00054" />
+      <option name="project" value="LOCAL" />
+      <updated>1746544422653</updated>
+    </task>
+    <option name="localTasksCounter" value="55" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -484,7 +483,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Fix: Corrections to Thunderball files" />
     <MESSAGE value="Fix: explicitly match only the actual number columns" />
     <MESSAGE value="Fix: Update the return in predict_thunderball_with_ml() to convert numpy.int64 types to native int." />
     <MESSAGE value="Feat: Add Lotto support" />
@@ -509,6 +507,7 @@
     <MESSAGE value="Fix: Correct accuracy for EM. &#10;&#10;train_models() now returns (model, reverse_map) tuples ✅&#10;&#10;predict_draw() is adjusted to unpack those tuples ✅&#10;&#10;The call to predict_draw() no longer passes label_maps ✅" />
     <MESSAGE value="Fix: Correct accuracy for EM. &#10;&#10;Replace that line with a safe fallback, ensuring y_val stays aligned with y_pred" />
     <MESSAGE value="Fix: Correct EM-ML. &#10;&#10;Convert all float32 values to native Python float using float()" />
-    <option name="LAST_COMMIT_MESSAGE" value="Fix: Correct EM-ML. &#10;&#10;Convert all float32 values to native Python float using float()" />
+    <MESSAGE value="Fix: Correct EM-ML. &#10;&#10;Ensure uniqueness of results" />
+    <option name="LAST_COMMIT_MESSAGE" value="Fix: Correct EM-ML. &#10;&#10;Ensure uniqueness of results" />
   </component>
 </project>

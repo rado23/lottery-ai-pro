@@ -1,5 +1,5 @@
 # src/euromillions_predictor.py
-
+import pandas as pd
 import numpy as np
 
 def weighted_unique_sample(population, weights, k):
