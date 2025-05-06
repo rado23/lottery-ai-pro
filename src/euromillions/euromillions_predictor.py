@@ -1,6 +1,9 @@
 # src/euromillions_predictor.py
+
 import pandas as pd
 import numpy as np
+from euromillions_analyzer import analyze_euromillions_draws
+import random
 
 def weighted_unique_sample(population, weights, k):
     """
@@ -18,35 +21,33 @@ def weighted_unique_sample(population, weights, k):
         population.pop(idx)
         weights = np.delete(weights, idx)
     return sorted(selected)
-from src.euromillions.euromillions_analyzer import analyze_euromillions_draws
 
-def generate_euromillions_predictions(stats, num_predictions=10):
-    main_weights = stats["main_number_weights"]
-    star_weights = stats["star_number_weights"]
-
-    main_numbers = list(main_weights.keys())
-    star_numbers = list(star_weights.keys())
-
-    main_probs = [main_weights[n] for n in main_numbers]
-    star_probs = [star_weights[s] for s in star_numbers]
-
-    # Normalize to probabilities
-    main_probs = [p / sum(main_probs) for p in main_probs]
-    star_probs = [p / sum(star_probs) for p in star_probs]
+def generate_prediction(stats, k=10):
+    all_main = stats["main_counts"].sort_values(ascending=False).index.tolist()
+    all_stars = stats["star_counts"].sort_values(ascending=False).index.tolist()
 
     predictions = []
-    for _ in range(num_predictions * 2):  # generate more for ranking
-        main = weighted_unique_sample(main_numbers, main_probs, 5)
-        stars = weighted_unique_sample(star_numbers, star_probs, 2)
-        predictions.append((main, stars))
+    used_main_sets = set()
 
-    # De-duplicate and rank by total weight (most probable first)
-    unique = {}
-    for main, stars in predictions:
-        key = tuple(main + stars)
-        score = sum(main_weights[n] for n in main) + sum(star_weights[s] for s in stars)
-        unique[key] = score
+    attempts = 0
+    while len(predictions) < k and attempts < 1000:
+        mains = sorted(random.sample(all_main[:25], 5))
+        stars = sorted(random.sample(all_stars[:8], 2))
+        main_key = tuple(mains)
 
-    ranked = sorted(unique.items(), key=lambda x: x[1], reverse=True)
-    top_10 = [list(k[:5]) + list(k[5:]) for k, _ in ranked[:10]]
-    return [{"main_numbers": combo[:5], "lucky_stars": combo[5:]} for combo in top_10]
+        if main_key not in used_main_sets:
+            used_main_sets.add(main_key)
+            predictions.append({
+                "main_numbers": [int(x) for x in mains],
+                "lucky_stars": [int(x) for x in stars],
+            })
+
+        attempts += 1
+
+    return predictions
+
+def predict_euromillions():
+    stats = analyze_euromillions_draws()
+    predictions = generate_prediction(stats, k=10)
+
+    return {"heuristic": predictions}
