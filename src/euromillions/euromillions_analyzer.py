@@ -8,25 +8,24 @@ from collections import defaultdict
 
 def analyze_euromillions_draws():
     df = pd.read_csv("data/euromillions_draws.csv")
-    df["date"] = pd.to_datetime(df["date"])
 
-    main_counts = Counter()
-    star_counts = Counter()
+    main_cols = [f"main_{i+1}" for i in range(5)]
+    star_cols = [f"star_{i+1}" for i in range(2)]
 
-    today = pd.Timestamp(datetime.today())
-    for _, row in df.iterrows():
-        days_ago = (today - row["date"]).days
-        weight = max(1, 100 - days_ago // 7)  # recency weight: stronger for recent weeks
+    all_main_numbers = df[main_cols].values.flatten()
+    all_star_numbers = df[star_cols].values.flatten()
 
-        for i in range(1, 6):
-            main_counts[row[f"main_{i}"]] += weight
-        for i in range(1, 3):
-            star_counts[row[f"star_{i}"]] += weight
+    main_counts = pd.Series(all_main_numbers).value_counts().sort_values(ascending=False)
+    star_counts = pd.Series(all_star_numbers).value_counts().sort_values(ascending=False)
 
     return {
-        "main_number_weights": dict(main_counts),
-        "star_number_weights": dict(star_counts)
+        "main_counts": main_counts,
+        "star_counts": star_counts,
+        "df": df,
+        "main_cols": main_cols,
+        "star_cols": star_cols
     }
+
 
 def analyze_co_occurrences(filepath="data/euromillions_draws.csv"):
     df = pd.read_csv(filepath)

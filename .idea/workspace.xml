@@ -4,10 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="bcacea02-2198-49c5-886f-a6758278f12e" name="Changes" comment="Fix: Correct EM-ML. &#10;&#10;Fix predictors: euromillions_predictor.py">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/euromillions/euromillions_predictor.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/euromillions/euromillions_predictor.py" afterDir="false" />
-    </list>
+    <list default="true" id="bcacea02-2198-49c5-886f-a6758278f12e" name="Changes" comment="Fix: Correct EM-ML. &#10;&#10;Fix predictors: euromillions_predictor.py" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -76,14 +73,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1744102537303</updated>
-    </task>
-    <task id="LOCAL-00011" summary="Feat:a /health route for uptime monitoring or auto-refresh options on data.">
-      <option name="closed" value="true" />
-      <created>1744385860045</created>
-      <option name="number" value="00011" />
-      <option name="presentableId" value="LOCAL-00011" />
-      <option name="project" value="LOCAL" />
-      <updated>1744385860045</updated>
     </task>
     <task id="LOCAL-00012" summary="Fix: Fix the euromillions">
       <option name="closed" value="true" />
@@ -469,7 +458,15 @@
       <option name="project" value="LOCAL" />
       <updated>1746549104862</updated>
     </task>
-    <option name="localTasksCounter" value="60" />
+    <task id="LOCAL-00060" summary="Fix: Correct EM-ML. &#10;&#10;Fix predictors: euromillions_predictor.py">
+      <option name="closed" value="true" />
+      <created>1746550291218</created>
+      <option name="number" value="00060" />
+      <option name="presentableId" value="LOCAL-00060" />
+      <option name="project" value="LOCAL" />
+      <updated>1746550291218</updated>
+    </task>
+    <option name="localTasksCounter" value="61" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
