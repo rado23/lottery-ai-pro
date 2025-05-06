@@ -2,7 +2,7 @@
 
 import pandas as pd
 import numpy as np
-from euromillions_analyzer import analyze_euromillions_draws
+from src.euromillions.euromillions_analyzer import analyze_euromillions_draws
 import random
 
 def weighted_unique_sample(population, weights, k):
